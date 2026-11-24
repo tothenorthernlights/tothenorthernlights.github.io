@@ -210,15 +210,6 @@
       "explain": "x is allowed, but it doesn't tell you what it holds. The other two are not allowed at all."
     },
     {
-      "id": "h1",
-      "level": "hard",
-      "q": "What does lives hold after this code runs?",
-      "code": "lives = 3\nlives = lives - 1",
-      "options": ["3", "1", "2", "Error"],
-      "answer": 2,
-      "explain": "Python takes the 3 out of the box, subtracts 1 to get 2, and puts 2 back in."
-    },
-    {
       "id": "h2",
       "level": "hard",
       "q": "Which line would cause an error?",
@@ -230,20 +221,6 @@
       ],
       "answer": 2,
       "explain": "Only letters, numbers and underscores are allowed, so the $ breaks the rules. (Some other languages allow $, but Python doesn't.)"
-    },
-    {
-      "id": "h3",
-      "level": "hard",
-      "q": "The code below tries to use a variable called Score. What happens?",
-      "code": "score = 5\ntotal = Score + 1",
-      "options": [
-        "It uses 5 and total becomes 6",
-        "It errors, because there is no box named Score",
-        "total becomes the word \"Score1\"",
-        "Python converts Score to lowercase"
-      ],
-      "answer": 1,
-      "explain": "Capital letters matter. Only score exists, so asking for Score finds no box (Python shows a NameError)."
     },
     {
       "id": "h4",
@@ -275,15 +252,6 @@
       "explain": "Capital letters matter, so Total and total are different boxes."
     },
     {
-      "id": "h7",
-      "level": "hard",
-      "q": "What does final_price hold?",
-      "code": "price = 20\ndiscount = 5\nfinal_price = price - discount",
-      "options": ["25", "15", "5", "20"],
-      "answer": 1,
-      "explain": "Python reads the values inside the price and discount boxes: 20 - 5 = 15."
-    },
-    {
       "id": "h8",
       "level": "hard",
       "q": "Which statement is TRUE?",
@@ -295,15 +263,6 @@
       ],
       "answer": 0,
       "explain": "Underscores are allowed. Capitals matter, numbers are fine if not first, and = means \"put into the box\"."
-    },
-    {
-      "id": "h9",
-      "level": "hard",
-      "q": "What does x hold after this code runs?",
-      "code": "x = 4\nx = x + 1\nx = x * 2",
-      "options": ["5", "8", "10", "12"],
-      "answer": 2,
-      "explain": "Step by step: x starts at 4, then becomes 5, then 5 * 2 = 10."
     },
     {
       "id": "h10",

@@ -52,27 +52,24 @@
 </h3>
 
 <p>
-  In JavaScript, you make a box with the word
-  <code
-    class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
-    >let</code
-  >, give it a name, and put something inside with
+  In Python, making a box is wonderfully simple. You write the name, an
   <code
     class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
     >=</code
-  >:
+  >
+  sign, and the value. No special keyword needed:
 </p>
 
 <div
   class="rounded-xl bg-void/90 border border-white/10 p-4 font-mono text-sm text-cyan-100 whitespace-pre-wrap"
 >
-  let playerName = "Sam"; let score = 10;
+  player_name = "Sam" score = 10
 </div>
 
 <p>
   Read it like a sentence:
   <em
-    >"Make a box called <strong>playerName</strong> and put
+    >"Make a box called <strong>player_name</strong> and put
     <strong>Sam</strong> inside."</em
   >
   The
@@ -89,7 +86,7 @@
 <div
   class="rounded-xl bg-void/90 border border-white/10 p-4 font-mono text-sm text-cyan-100 whitespace-pre-wrap"
 >
-  score = 11;
+  score = 11
 </div>
 
 <p>
@@ -103,8 +100,8 @@
 
 <p>
   You get to choose the label, but there are some
-  <strong>rules you must follow</strong>, or the computer will refuse to run
-  your code:
+  <strong>rules you must follow</strong>, or Python will show an error and
+  refuse to run your code:
 </p>
 
 <ul class="list-disc pl-6 space-y-2">
@@ -112,30 +109,27 @@
     <strong>No spaces.</strong> Use
     <code
       class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
-      >playerName</code
+      >player_name</code
     >, not
     <code
       class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
       >player name</code
-    >. The computer thinks a space means a new word has started.
+    >. Python thinks a space means a new word has started.
   </li>
   <li>
     <strong
-      >Only letters, numbers, underscores (<code
+      >Only letters, numbers and underscores (<code
         class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
         >_</code
-      >) and dollar signs (<code
-        class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
-        >$</code
       >).</strong
     >
     Symbols like
     <code
       class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
-      >- ! @ #</code
+      >- ! @ # $</code
     >
-    are not allowed. The dash is the common trap, because the computer reads it
-    as "minus".
+    are not allowed. The dash is the common trap, because Python reads it as
+    "minus".
   </li>
   <li>
     <strong>Can't start with a number.</strong>
@@ -151,19 +145,23 @@
     is not.
   </li>
   <li>
-    <strong>Can't be a reserved word.</strong> Words like
-    <code
-      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
-      >let</code
-    >,
+    <strong>Can't be a Python keyword.</strong> Words like
     <code
       class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
       >if</code
+    >,
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >for</code
+    >,
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >class</code
     >
     and
     <code
       class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
-      >class</code
+      >True</code
     >
     already have a special job. It's like naming your shop "STOP": everyone
     would be confused.
@@ -194,7 +192,7 @@
     is useless.
     <code
       class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
-      >userAge</code
+      >user_age</code
     >
     beats
     <code
@@ -204,16 +202,17 @@
     every time.
   </li>
   <li>
-    <strong>Use camelCase for multiple words.</strong> Start lowercase, then
-    capitalize each new word:
+    <strong>Use snake_case for multiple words.</strong> Write everything in
+    lowercase and join the words with underscores:
     <code
       class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
-      >totalPrice</code
+      >total_price</code
     >,
     <code
       class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
-      >firstName</code
-    >. The capitals look like the humps on a camel.
+      >first_name</code
+    >. The underscores sit low on the line like a snake lying flat. This is the
+    style almost all Python programmers use.
   </li>
   <li>
     <strong>Be consistent.</strong> Pick one style and stick with it, so your
@@ -222,22 +221,23 @@
 </ul>
 
 <p>
-  Not sure if a name is allowed? Check the cheat sheet below. Notice that the
-  bad names break exactly one of the rules above.
+  Not sure if a name is allowed? Check the cheat sheet below. Notice that each
+  bad name breaks exactly one of the rules above.
 </p>
 
 <pre data-label="NAME CHEAT SHEET">
 ✅ GOOD NAMES
-playerName      (clear + camelCase)
-totalPrice      (says what it holds)
+player_name     (clear + snake_case)
+total_price     (says what it holds)
 score2          (numbers are fine, just not first)
 _secret         (underscore is allowed)
 
 ❌ BAD NAMES
 player name     (has a space)
-2ndPlace        (starts with a number)
+2nd_place       (starts with a number)
 total-price     (dash is read as "minus")
-let             (reserved word)
+price$          ($ is not allowed in Python)
+class           (reserved keyword)
 
 ⚠️ LEGAL BUT UNHELPFUL
 x               (x of what?)
