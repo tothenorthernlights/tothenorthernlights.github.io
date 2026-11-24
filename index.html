@@ -701,11 +701,12 @@
           id="modal-class-body"
           class="space-y-4 text-sm sm:text-base text-slate-300/90 leading-relaxed mb-7"
         >
-          <!-- Paragraphs injected dynamically -->
+          <!-- Class content loaded from content/{classId}.html -->
         </div>
 
         <!-- Interactive Key Takeaway / Code & Concept Spotlight -->
         <div
+          id="spotlight-box"
           class="rounded-2xl bg-void/90 border border-emerald-400/25 p-5 mb-8"
         >
           <div class="flex items-center justify-between mb-2.5">
@@ -809,9 +810,6 @@
               duration: "6 min",
               difficulty: "Beginner",
               summary: "A quick summary",
-              paragraphs: ["A short paragraph"],
-              spotlightLabel: "Spot Light Label",
-              spotlight: "Spotlight",
             },
             {
               id: "phys-102",
@@ -819,10 +817,7 @@
               title: "Class 02",
               duration: "8 min",
               difficulty: "Beginner",
-              ummary: "A quick summary",
-              paragraphs: ["A short paragraph"],
-              spotlightLabel: "Spot Light Label",
-              spotlight: "Spotlight",
+              summary: "A quick summary",
             },
             {
               id: "phys-103",
@@ -830,10 +825,7 @@
               title: "Class 03",
               duration: "9 min",
               difficulty: "Intermediate",
-              ummary: "A quick summary",
-              paragraphs: ["A short paragraph"],
-              spotlightLabel: "Spot Light Label",
-              spotlight: "Spotlight",
+              summary: "A quick summary",
             },
           ],
         },
@@ -1316,6 +1308,38 @@
       const modalNextBtn = document.getElementById("modal-next-btn");
       const closeModalBtn = document.getElementById("close-modal-btn");
       const copySpotlightBtn = document.getElementById("copy-spotlight-btn");
+      const spotlightBoxEl = document.getElementById("spotlight-box");
+      const contentCache = {};
+
+      async function loadClassContent(classId) {
+        try {
+          if (!contentCache[classId]) {
+            const res = await fetch(`content/${classId}.html`);
+            if (!res.ok) throw new Error("missing");
+            contentCache[classId] = await res.text();
+          }
+
+          if (appState.modalClassId !== classId) return;
+
+          const tmp = document.createElement("div");
+          tmp.innerHTML = contentCache[classId];
+
+          const spot = tmp.querySelector("pre[data-label]");
+          if (spot) {
+            modalSpotlightLabelEl.textContent = spot.dataset.label;
+            modalSpotlightContentEl.textContent = spot.textContent;
+            spotlightBoxEl.style.display = "";
+            spot.remove();
+          }
+
+          modalClassBodyEl.innerHTML = tmp.innerHTML;
+        } catch {
+          if (appState.modalClassId === classId) {
+            modalClassBodyEl.innerHTML =
+              '<p class="text-slate-400">This class isn\'t written yet.</p>';
+          }
+        }
+      }
 
       function openClassModal(classId) {
         const found = findClassById(classId);
@@ -1335,12 +1359,10 @@
         modalClassTitleEl.textContent = classItem.title;
         modalClassSummaryEl.textContent = classItem.summary;
 
-        modalClassBodyEl.innerHTML = classItem.paragraphs
-          .map((p) => `<p>${p}</p>`)
-          .join("");
-
-        modalSpotlightLabelEl.textContent = classItem.spotlightLabel;
-        modalSpotlightContentEl.textContent = classItem.spotlight;
+        spotlightBoxEl.style.display = "none";
+        modalClassBodyEl.innerHTML =
+          '<p class="text-slate-400">Loading…</p>';
+        loadClassContent(classId);
 
         updateModalCompleteButton(classId);
 
