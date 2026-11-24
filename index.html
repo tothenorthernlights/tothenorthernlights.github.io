@@ -1,0 +1,1901 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To the Northern Lights</title>
+    <meta
+      name="description"
+      content="A 2027-ready futuristic learning platform set beneath a real-time interactive Aurora Borealis."
+    />
+
+    <!-- Google Fonts: Space Grotesk, Syne & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Syne", "sans-serif"],
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            colors: {
+              void: "#03060d",
+              obsidian: "#070d1a",
+              aurora: {
+                emerald: "#00ffaa",
+                cyan: "#00e5ff",
+                violet: "#b54cff",
+                magenta: "#ff2a85",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* ==========================================================================
+       2027 SPATIAL AURORA DESIGN SYSTEM & CUSTOM MOTION PRIMITIVES
+       ========================================================================== */
+      :root {
+        --bg-void: #03060d;
+        --aurora-emerald: #00ffaa;
+        --aurora-cyan: #00e5ff;
+        --aurora-violet: #b54cff;
+        --aurora-magenta: #ff2a85;
+        --glass-surface: rgba(8, 14, 28, 0.56);
+        --glass-border: rgba(255, 255, 255, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg-void);
+        color: #eef6ff;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Custom Sleek Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #03060d;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #00ffaa, #00e5ff, #b54cff);
+        border-radius: 999px;
+      }
+
+      /* Fullscreen Interactive Aurora Canvas */
+      #aurora-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      /* Desktop Spatial Cursor Aura */
+      #cursor-aura {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 340px;
+        height: 340px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 255, 170, 0.11) 0%,
+          rgba(0, 229, 255, 0.05) 40%,
+          transparent 70%
+        );
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 1;
+        transition: opacity 0.3s ease;
+        mix-blend-mode: screen;
+      }
+      @media (hover: none) and (pointer: coarse) {
+        #cursor-aura {
+          display: none;
+        }
+      }
+
+      /* Obsidian Frosted Glass Surface */
+      .glass-obsidian {
+        background: var(--glass-surface);
+        backdrop-filter: blur(20px) saturate(140%);
+        -webkit-backdrop-filter: blur(20px) saturate(140%);
+        border: 1px solid var(--glass-border);
+        box-shadow:
+          0 24px 60px rgba(0, 0, 0, 0.65),
+          inset 0 1px 0 rgba(255, 255, 255, 0.09);
+      }
+
+      /* Animated Aurora Gradient Border Beam */
+      @property --beam-angle {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+      @keyframes spinBeam {
+        to {
+          --beam-angle: 360deg;
+        }
+      }
+      .aurora-beam-card {
+        position: relative;
+        border-radius: 1.5rem;
+        background: rgba(7, 13, 26, 0.78);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .aurora-beam-card::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 1.5px;
+        background: conic-gradient(
+          from var(--beam-angle),
+          transparent 0deg,
+          #00ffaa 70deg,
+          #00e5ff 140deg,
+          #b54cff 210deg,
+          transparent 280deg
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        animation: spinBeam 6s linear infinite;
+        opacity: 0.45;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+      }
+      .aurora-beam-card:hover::before,
+      .aurora-beam-card.is-active::before {
+        opacity: 1;
+      }
+
+      /* 3D Tilt & Specular Sheen */
+      .spatial-tilt {
+        position: relative;
+        transform-style: preserve-3d;
+        transition:
+          transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.3s ease;
+        overflow: hidden;
+      }
+      .spatial-tilt::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          420px circle at var(--mx, 50%) var(--my, 50%),
+          rgba(0, 255, 170, 0.14),
+          rgba(0, 229, 255, 0.05) 40%,
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+      }
+      .spatial-tilt:hover::after {
+        opacity: 1;
+      }
+
+      /* Kinetic Typography Split-Word Reveal */
+      .kinetic-word {
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: bottom;
+        padding-bottom: 0.08em;
+      }
+      .kinetic-word > span {
+        display: inline-block;
+        transform: translateY(115%) rotateX(-35deg);
+        opacity: 0;
+        animation: wordRise 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes wordRise {
+        to {
+          transform: translateY(0) rotateX(0deg);
+          opacity: 1;
+        }
+      }
+
+      /* Flowing Liquid Aurora Text */
+      .aurora-text-shimmer {
+        background: linear-gradient(
+          115deg,
+          #ffffff 0%,
+          #00ffaa 28%,
+          #00e5ff 55%,
+          #b54cff 80%,
+          #00ffaa 100%
+        );
+        background-size: 220% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: shimmerFlow 7s linear infinite;
+      }
+      @keyframes shimmerFlow {
+        0% {
+          background-position: 0% center;
+        }
+        100% {
+          background-position: 220% center;
+        }
+      }
+
+      /* Magnetic Button Transition */
+      .magnetic-btn {
+        transition:
+          transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.25s ease,
+          background-color 0.25s ease;
+        will-change: transform;
+      }
+
+      /* Scroll Stagger Reveal */
+      .reveal-item {
+        opacity: 0;
+        transform: translateY(28px) scale(0.98);
+        transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal-item.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      /* Smooth View Transition for Classes Panel */
+      @keyframes panelFadeSlide {
+        from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.99);
+          filter: blur(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+      }
+      .animate-panel-in {
+        animation: panelFadeSlide 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* Modal Backdrop & Drawer Motion */
+      #lesson-modal {
+        transition:
+          opacity 0.3s ease,
+          visibility 0.3s ease;
+      }
+      #lesson-modal.hidden-modal {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #lesson-modal.open-modal {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      #lesson-modal .modal-card {
+        transform: translateY(24px) scale(0.97);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      #lesson-modal.open-modal .modal-card {
+        transform: translateY(0) scale(1);
+      }
+    </style>
+  </head>
+  <body
+    class="antialiased selection:bg-emerald-400/30 selection:text-emerald-100"
+  >
+    <!-- ========================================================================
+       1. PERSISTENT INTERACTIVE AURORA CANVAS & DESKTOP CURSOR AURA
+       ======================================================================== -->
+    <canvas id="aurora-canvas" aria-hidden="true"></canvas>
+    <div id="cursor-aura" aria-hidden="true"></div>
+
+    <!-- ========================================================================
+       2. MINIMAL FLOATING GLASS NAVBAR
+       ======================================================================== -->
+    <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 pt-4">
+      <nav
+        class="max-w-6xl mx-auto glass-obsidian rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between"
+      >
+        <!-- Brand Mark with Animated Aurora Orb -->
+        <a href="#overview" class="flex items-center gap-3 group">
+          <span
+            class="relative w-8 h-8 rounded-full flex items-center justify-center bg-void border border-emerald-400/40 shadow-[0_0_20px_rgba(0,255,170,0.35)] overflow-hidden"
+          >
+            <span
+              class="absolute inset-0 bg-gradient-to-tr from-emerald-400 via-cyan-400 to-purple-500 opacity-80 group-hover:rotate-180 transition-transform duration-700"
+            ></span>
+            <span class="relative w-3 h-3 rounded-full bg-void"></span>
+          </span>
+          <span
+            class="font-display font-bold tracking-tight text-sm sm:text-base text-white"
+          >
+            To the Northern Lights
+          </span>
+        </a>
+
+        <!-- Quick Navigation Pills -->
+        <div
+          class="hidden sm:flex items-center gap-1.5 bg-white/[0.04] border border-white/10 rounded-xl p-1"
+        >
+          <a
+            href="#overview"
+            class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-200 hover:text-white hover:bg-white/10 transition-all"
+          >
+            Overview
+          </a>
+          <a
+            href="#curriculum"
+            class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-200 hover:text-white hover:bg-white/10 transition-all"
+          >
+            Curriculum
+          </a>
+        </div>
+
+        <!-- Actions: Ambient Synth Toggle & Magnetic CTA -->
+        <div class="flex items-center gap-2.5">
+          <button
+            id="ambient-toggle"
+            type="button"
+            class="px-3 py-2 rounded-xl text-xs font-mono bg-white/[0.05] hover:bg-white/10 border border-white/10 text-cyan-200 transition-all flex items-center gap-2"
+            title="Toggle Ambient Cosmic Synth"
+          >
+            <span
+              id="ambient-dot"
+              class="w-2 h-2 rounded-full bg-slate-500 transition-colors"
+            ></span>
+            <span id="ambient-text" class="hidden md:inline"
+              >Ambient Sound</span
+            >
+          </button>
+
+          <a
+            href="#curriculum"
+            class="magnetic-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-aurora-emerald to-aurora-cyan text-void shadow-[0_0_24px_rgba(0,255,170,0.3)] hover:shadow-[0_0_32px_rgba(0,255,170,0.55)]"
+          >
+            Start Learning
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ========================================================================
+       3. HERO LANDING SECTION + 3-CARD SPATIAL BENTO PREVIEW
+       ======================================================================== -->
+    <main class="relative z-10">
+      <section
+        id="overview"
+        class="relative min-h-screen flex flex-col justify-between pt-28 sm:pt-32"
+      >
+        <!-- Center Kinetic Hero -->
+        <div class="max-w-5xl mx-auto px-6 text-center my-auto pt-4 pb-12">
+          <!-- Floating Telemetry Badge -->
+          <div
+            class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full glass-obsidian border border-emerald-400/25 text-[11px] font-mono tracking-widest text-emerald-200 mb-7 reveal-item is-visible"
+          >
+            <span
+              class="w-2 h-2 rounded-full bg-aurora-emerald animate-ping"
+            ></span>
+            <span>2027 Learning</span>
+          </div>
+
+          <!-- Kinetic Split-Word Headline -->
+          <h1
+            class="font-display text-4xl sm:text-6xl md:text-7xl lg:text-[5.25rem] font-extrabold tracking-tight leading-[1.04] mb-6"
+          >
+            <span class="kinetic-word"
+              ><span style="animation-delay: 0.05s">Journey</span></span
+            >
+            <span class="kinetic-word"
+              ><span style="animation-delay: 0.14s">To</span></span
+            >
+            <br class="hidden sm:inline" />
+            <span class="kinetic-word"
+              ><span class="aurora-text-shimmer" style="animation-delay: 0.24s"
+                >The</span
+              ></span
+            >
+            <span class="kinetic-word"
+              ><span class="aurora-text-shimmer" style="animation-delay: 0.34s"
+                >Northern</span
+              ></span
+            >
+            <span class="kinetic-word"
+              ><span class="aurora-text-shimmer" style="animation-delay: 0.44s"
+                >Lights</span
+              ></span
+            >
+          </h1>
+
+          <!-- Concise Subtitle -->
+          <!-- <p
+            class="max-w-2xl mx-auto text-base sm:text-lg text-slate-300/85 font-light leading-relaxed mb-9 reveal-item is-visible"
+            style="transition-delay: 0.35s"
+          >
+            A distraction-free cosmic learning sanctuary. Master structured
+            topics class by class beneath a living, cursor-reactive polar sky.
+          </p> -->
+
+          <!-- Dual CTA: Explore Topics + Dynamic Resume Class -->
+          <div
+            class="flex flex-wrap items-center justify-center gap-4 reveal-item is-visible"
+            style="transition-delay: 0.45s"
+          >
+            <a
+              href="#curriculum"
+              class="magnetic-btn px-7 py-3.5 rounded-2xl bg-gradient-to-r from-aurora-emerald via-aurora-cyan to-aurora-emerald bg-[length:200%_auto] text-void font-bold text-sm sm:text-base shadow-[0_10px_35px_rgba(0,255,170,0.3)] hover:shadow-[0_14px_45px_rgba(0,229,255,0.45)]"
+            >
+              Topics
+            </a>
+
+            <button
+              id="resume-class-btn"
+              type="button"
+              class="hidden magnetic-btn px-6 py-3.5 rounded-2xl glass-obsidian hover:bg-white/10 border border-cyan-400/35 text-cyan-200 font-semibold text-sm sm:text-base items-center gap-2.5"
+            >
+              <span class="w-2 h-2 rounded-full bg-aurora-cyan"></span>
+              <span id="resume-class-label">Resume Class</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Compact 3-Card Spatial Preview Bento Strip -->
+
+        <!-- <div class="max-w-6xl mx-auto w-full px-6 pb-10">
+          <div
+            id="heroStepsGrid"
+            class="grid grid-cols-1 md:grid-cols-3 gap-5"
+          ></div>
+        </div> -->
+
+        <!-- Arctic Silhouette Horizon Divider -->
+        <div
+          class="relative w-full pointer-events-none select-none overflow-hidden"
+        >
+          <svg
+            class="w-full h-24 sm:h-36 md:h-44 block"
+            viewBox="0 0 1440 200"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="ridgeBack" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#071329" stop-opacity="0.92" />
+                <stop offset="100%" stop-color="#03060d" stop-opacity="1" />
+              </linearGradient>
+              <linearGradient id="ridgeFront" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#040914" stop-opacity="0.98" />
+                <stop offset="100%" stop-color="#03060d" stop-opacity="1" />
+              </linearGradient>
+            </defs>
+            <path
+              fill="url(#ridgeBack)"
+              d="M0,145 L180,72 L360,132 L540,58 L740,128 L940,48 L1150,122 L1320,68 L1440,115 L1440,200 L0,200 Z"
+            />
+            <path
+              fill="url(#ridgeFront)"
+              d="M0,168 L220,112 L440,162 L660,104 L880,158 L1100,108 L1300,156 L1440,124 L1440,200 L0,200 Z"
+            />
+            <!-- Minimal Pine Tree Silhouettes -->
+            <g fill="#03060d">
+              <polygon points="110,168 122,124 134,168" />
+              <polygon points="130,168 145,112 160,168" />
+              <polygon points="154,168 166,128 178,168" />
+              <polygon points="1240,168 1254,118 1268,168" />
+              <polygon points="1264,168 1280,106 1296,168" />
+              <polygon points="1292,168 1305,126 1318,168" />
+            </g>
+          </svg>
+          <div
+            class="h-[1px] w-full bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent"
+          ></div>
+        </div>
+      </section>
+
+      <!-- ========================================================================
+         4. FOCUSED CURRICULUM EXPLORER (TOPICS -> CLASSES)
+         ======================================================================== -->
+      <section
+        id="curriculum"
+        class="relative py-20 sm:py-28 px-4 sm:px-6 max-w-6xl mx-auto"
+      >
+        <!-- Section Header + Overall Mastery Telemetry -->
+        <div
+          class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 reveal-item"
+        >
+          <div>
+            <span
+              class="font-mono text-xs uppercase tracking-[0.26em] text-aurora-emerald"
+              >Curriculum Architecture</span
+            >
+            <h2
+              class="font-display text-3xl sm:text-5xl font-bold text-white mt-2"
+            >
+              Topics &amp; Classes
+            </h2>
+          </div>
+
+          <div
+            class="glass-obsidian rounded-2xl px-5 py-3.5 flex items-center gap-4"
+          >
+            <div>
+              <div
+                class="text-[11px] font-mono uppercase tracking-wider text-slate-400"
+              >
+                Total Expedition Progress
+              </div>
+              <div class="text-sm sm:text-base font-bold text-white mt-0.5">
+                <span id="overall-completed-count" class="text-aurora-emerald"
+                  >0</span
+                >
+                <span class="text-slate-400 font-normal">
+                  / <span id="overall-total-count">0</span> Classes
+                  Completed</span
+                >
+              </div>
+            </div>
+            <div
+              class="w-12 h-12 rounded-xl bg-emerald-400/10 border border-emerald-400/30 flex items-center justify-center font-mono text-xs font-bold text-aurora-emerald"
+              id="overall-percent"
+            >
+              0%
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 1: TOPIC SELECTOR CARDS GRID -->
+        <div
+          id="topics-grid"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12 reveal-item"
+        >
+          <!-- Populated dynamically from CURRICULUM_DATA -->
+        </div>
+
+        <!-- STEP 2: ACTIVE TOPIC CLASSES WORKSPACE -->
+        <div
+          id="classes-workspace"
+          class="glass-obsidian rounded-3xl p-6 sm:p-10 border border-white/10 reveal-item"
+        >
+          <!-- Active Topic Header -->
+          <div
+            class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-7 mb-7 border-b border-white/10"
+          >
+            <div class="space-y-2 max-w-2xl">
+              <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 font-mono text-xs text-cyan-300"
+                id="active-topic-tag"
+              >
+                TOPIC 01
+              </div>
+              <h3
+                class="font-display text-2xl sm:text-3xl font-bold text-white"
+                id="active-topic-title"
+              >
+                Loading Topic...
+              </h3>
+              <p
+                class="text-sm sm:text-base text-slate-300/80 leading-relaxed"
+                id="active-topic-desc"
+              >
+                Loading description...
+              </p>
+            </div>
+
+            <!-- Topic Progress Pill -->
+            <div class="shrink-0 glass-obsidian rounded-2xl p-4 min-w-[210px]">
+              <div class="flex justify-between text-xs font-mono mb-2">
+                <span class="text-slate-400">Topic Mastery</span>
+                <span
+                  class="text-aurora-emerald font-semibold"
+                  id="active-topic-progress-text"
+                  >0 / 4</span
+                >
+              </div>
+              <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                <div
+                  id="active-topic-progress-bar"
+                  class="h-full bg-gradient-to-r from-aurora-emerald to-aurora-cyan rounded-full transition-all duration-500"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Classes List Grid for Selected Topic -->
+          <div id="classes-list" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Populated dynamically when a topic is clicked -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ========================================================================
+       5. DISTRACTION-FREE INTERACTIVE CLASS READER MODAL / DRAWER
+       ======================================================================== -->
+    <div
+      id="lesson-modal"
+      class="fixed inset-0 z-50 hidden-modal flex items-center justify-center p-4 sm:p-6 bg-void/80 backdrop-blur-xl"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-class-title"
+    >
+      <div
+        class="modal-card relative w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-obsidian rounded-3xl border border-white/15 p-6 sm:p-10 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
+      >
+        <!-- Top Bar: Topic Breadcrumb & Close Button -->
+        <div
+          class="flex items-center justify-between gap-4 pb-5 mb-6 border-b border-white/10"
+        >
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <span
+              id="modal-topic-badge"
+              class="px-2.5 py-1 rounded-lg bg-emerald-400/15 border border-emerald-400/30 font-mono text-[11px] text-emerald-200"
+            >
+              TOPIC 01
+            </span>
+            <span
+              id="modal-class-meta"
+              class="font-mono text-xs text-slate-400"
+            >
+              Class 01 · 8 min · Beginner
+            </span>
+          </div>
+
+          <button
+            id="close-modal-btn"
+            type="button"
+            class="w-9 h-9 rounded-xl bg-white/[0.06] hover:bg-white/15 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+            aria-label="Close Class Reader"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Class Title & Summary -->
+        <h2
+          id="modal-class-title"
+          class="font-display text-2xl sm:text-4xl font-bold text-white leading-tight mb-4"
+        >
+          Class Title
+        </h2>
+        <p
+          id="modal-class-summary"
+          class="text-sm sm:text-base text-cyan-200/90 font-medium leading-relaxed mb-6"
+        >
+          Class summary goes here.
+        </p>
+
+        <!-- Structured Lesson Body -->
+        <div
+          id="modal-class-body"
+          class="space-y-4 text-sm sm:text-base text-slate-300/90 leading-relaxed mb-7"
+        >
+          <!-- Paragraphs injected dynamically -->
+        </div>
+
+        <!-- Interactive Key Takeaway / Code & Concept Spotlight -->
+        <div
+          class="rounded-2xl bg-void/90 border border-emerald-400/25 p-5 mb-8"
+        >
+          <div class="flex items-center justify-between mb-2.5">
+            <span
+              id="modal-spotlight-label"
+              class="font-mono text-[11px] uppercase tracking-widest text-aurora-emerald"
+            >
+              KEY CONCEPT SPOTLIGHT
+            </span>
+            <button
+              id="copy-spotlight-btn"
+              type="button"
+              class="px-2.5 py-1 rounded-lg bg-white/[0.06] hover:bg-white/15 font-mono text-[11px] text-slate-300 transition-colors"
+            >
+              Copy
+            </button>
+          </div>
+          <pre
+            id="modal-spotlight-content"
+            class="font-mono text-xs sm:text-sm text-cyan-100 whitespace-pre-wrap leading-relaxed overflow-x-auto"
+          ></pre>
+        </div>
+
+        <!-- Bottom Action Footer: Mark Complete + Prev/Next Class Navigation -->
+        <div
+          class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-5 border-t border-white/10"
+        >
+          <button
+            id="modal-complete-btn"
+            type="button"
+            class="px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2"
+          >
+            <span id="modal-complete-icon">○</span>
+            <span id="modal-complete-text">Mark Class Complete</span>
+          </button>
+
+          <div class="flex items-center justify-end gap-2.5">
+            <button
+              id="modal-prev-btn"
+              type="button"
+              class="px-4 py-3 rounded-xl bg-white/[0.06] hover:bg-white/12 disabled:opacity-35 disabled:pointer-events-none border border-white/10 text-xs font-semibold text-white transition-all"
+            >
+              ← Previous
+            </button>
+            <button
+              id="modal-next-btn"
+              type="button"
+              class="px-4 py-3 rounded-xl bg-gradient-to-r from-aurora-emerald to-aurora-cyan disabled:opacity-35 disabled:pointer-events-none text-xs font-bold text-void transition-all"
+            >
+              Next Class →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+       6. MINIMAL GITHUB PAGES FOOTER
+       ======================================================================== -->
+    <footer class="relative z-10 border-t border-white/10 mt-12 py-10 px-6">
+      <div
+        class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400"
+      >
+        <div class="text-center sm:text-left space-y-1">
+          <p class="font-display text-sm font-bold text-white">
+            To the Northern Lights
+          </p>
+          <p>
+            GitHub Pages ready · Customize your lessons anytime by editing
+            <code
+              class="font-mono text-emerald-300 bg-white/5 px-1.5 py-0.5 rounded"
+              >CURRICULUM_DATA</code
+            >
+            inside
+            <code
+              class="font-mono text-cyan-300 bg-white/5 px-1.5 py-0.5 rounded"
+              >index.html</code
+            >.
+          </p>
+        </div>
+
+        <a
+          href="#overview"
+          class="px-4 py-2.5 rounded-xl glass-obsidian hover:bg-white/10 text-slate-200 font-mono text-xs transition-all shrink-0"
+        >
+          ↑ Back to Top
+        </a>
+      </div>
+    </footer>
+
+    <!-- ========================================================================
+       7. CURRICULUM DATA & APPLICATION LOGIC (MODULAR, CLEAN & 60FPS)
+       ======================================================================== -->
+    <script>
+      /* ==========================================================================
+       EASY-TO-EDIT CURRICULUM DATA OBJECT
+       Swap, add, or edit Topics and their nested Classes right here!
+       ========================================================================== */
+      const CURRICULUM_DATA = [
+        {
+          id: "topic-physics",
+          number: "01",
+          title: "Variables",
+          shortTitle: "variables",
+          accent: "emerald",
+          description: "",
+          classes: [
+            {
+              id: "phys-101",
+              number: "Class 01",
+              title: "Class 01",
+              duration: "6 min",
+              difficulty: "Beginner",
+              summary: "A quick summary",
+              paragraphs: ["A short paragraph"],
+              spotlightLabel: "Spot Light Label",
+              spotlight: "Spotlight",
+            },
+            {
+              id: "phys-102",
+              number: "Class 02",
+              title: "Class 02",
+              duration: "8 min",
+              difficulty: "Beginner",
+              ummary: "A quick summary",
+              paragraphs: ["A short paragraph"],
+              spotlightLabel: "Spot Light Label",
+              spotlight: "Spotlight",
+            },
+            {
+              id: "phys-103",
+              number: "Class 03",
+              title: "Class 03",
+              duration: "9 min",
+              difficulty: "Intermediate",
+              ummary: "A quick summary",
+              paragraphs: ["A short paragraph"],
+              spotlightLabel: "Spot Light Label",
+              spotlight: "Spotlight",
+            },
+          ],
+        },
+        // // {
+        // //   id: "topic-shaders",
+        // //   number: "02",
+        // //   title: "Creative Shaders & Aurora Math",
+        // //   shortTitle: "Shaders & Aurora Math",
+        // //   accent: "cyan",
+        // //   description:
+        // //     "Discover the procedural wave functions, fractional Brownian motion, and additive color blending behind real-time digital northern lights.",
+        // //   classes: [
+        // //     {
+        // //       id: "shad-201",
+        // //       number: "Class 01",
+        // //       title: "Harmonic Sine Superposition",
+        // //       duration: "10 min",
+        // //       difficulty: "Intermediate",
+        // //       summary:
+        // //         "Combining multiple traveling sine and cosine waves to sculpt organic, flowing celestial ribbons.",
+        // //       paragraphs: [
+        // //         "A single sine wave looks mechanical, but summing three or more waves with non-integer frequency ratios creates organic motion that never visibly repeats.",
+        // //         "By offsetting phase with elapsed time and modulating amplitude across the horizontal axis, a simple 1D curve transforms into a billowing polar curtain.",
+        // //       ],
+        // //       spotlightLabel: "HARMONIC RIBBON EQUATION (JS / GLSL)",
+        // //       spotlight:
+        // //         "float wave(float x, float t) {\n  float y = sin(x * 2.2 + t * 0.7) * 0.55;\n  y += cos(x * 5.1 - t * 0.5) * 0.34;\n  y += sin(x * 10.5 + t * 1.2) * 0.14;\n  return y;\n}",
+        // //     },
+        // //     {
+        // //       id: "shad-202",
+        // //       number: "Class 02",
+        // //       title: "Vertical Ray Striations & Falloff",
+        // //       duration: "11 min",
+        // //       difficulty: "Intermediate",
+        // //       summary:
+        // //         "Simulating magnetic field-aligned light pillars using high-frequency horizontal modulation and exponential vertical decay.",
+        // //       paragraphs: [
+        // //         "Real auroras aren’t flat gradients—they consist of thousands of vertical rays aligned with Earth’s magnetic field lines.",
+        // //         "In code, we multiply a sharp bottom-to-top alpha gradient by a high-frequency horizontal interference pattern so individual rays shimmer and fade naturally into the stars.",
+        // //       ],
+        // //       spotlightLabel: "RAY SHIMMER MODULATION",
+        // //       spotlight:
+        // //         "const rayIntensity =\n  0.55 + 0.45 * Math.sin(x * 0.032 + time * 2.4) * Math.cos(x * 0.014 - time * 1.3);",
+        // //     },
+        // //     {
+        // //       id: "shad-203",
+        // //       number: "Class 03",
+        // //       title: "Additive Blending & Glacial Reflections",
+        // //       duration: "8 min",
+        // //       difficulty: "Advanced",
+        // //       summary:
+        // //         "Using lighter composite modes and mirrored sinusoidal displacement to reflect sky luminescence onto dark Arctic water.",
+        // //       paragraphs: [
+        // //         'Light in the night sky accumulates additively. Switching the canvas composite operation to "lighter" lets overlapping green, cyan, and violet curtains bloom naturally without turning muddy.',
+        // //         "To mirror the aurora on a frozen fjord, we project attenuated horizontal shimmer bands below the horizon line and perturb their x-offsets with slow water ripples.",
+        // //       ],
+        // //       spotlightLabel: "ADDITIVE BLOOM PIPELINE",
+        // //       spotlight:
+        // //         'ctx.globalCompositeOperation = "lighter";\n// Overlapping curtains sum RGB channels toward luminous white-cyan cores',
+        // //     },
+        // //   ],
+        // // },
+        // // {
+        // //   id: "topic-photo",
+        // //   number: "03",
+        // //   title: "Arctic Astrophotography",
+        // //   shortTitle: "Arctic Photography",
+        // //   accent: "violet",
+        // //   description:
+        // //     "Master manual exposure triangles, sub-zero gear preparation, and foreground composition for razor-sharp night sky captures.",
+        // //   classes: [
+        // //     {
+        // //       id: "phot-301",
+        // //       number: "Class 01",
+        // //       title: "The Aurora Exposure Triangle",
+        // //       duration: "7 min",
+        // //       difficulty: "Beginner",
+        // //       summary:
+        // //         "Balancing wide apertures, high ISO sensitivity, and fast shutter speeds to freeze dancing auroral pillars.",
+        // //       paragraphs: [
+        // //         "Unlike static Milky Way photography where 20-second exposures are common, fast-moving auroras blur into a green wash if your shutter stays open too long.",
+        // //         "Start with your widest aperture (f/1.4 to f/2.8), set ISO between 1600 and 3200, and keep shutter speeds between 2 and 8 seconds depending on storm velocity.",
+        // //       ],
+        // //       spotlightLabel: "BASELINE NIGHT EXPOSURE PRESET",
+        // //       spotlight:
+        // //         "Aperture : f/1.8 (Wide open)\nShutter  : 4.0 sec (Freezes vertical ray structure)\nISO      : 2500\nFocus    : Manual Infinity (verified via Live View 10x zoom on a bright star)",
+        // //     },
+        // //     {
+        // //       id: "phot-302",
+        // //       number: "Class 02",
+        // //       title: "Sub-Zero Battery & Lens Care",
+        // //       duration: "6 min",
+        // //       difficulty: "Beginner",
+        // //       summary:
+        // //         "Preventing lithium battery voltage drops and lens condensation when transitioning between -25°C nights and warm cabins.",
+        // //       paragraphs: [
+        // //         "Extreme Arctic cold slows chemical reactions inside lithium-ion cells, cutting battery life by up to 60%. Always carry two spare batteries in an inside coat pocket close to body heat.",
+        // //         "Before stepping indoors, seal your camera inside an airtight zip bag so warm indoor moisture condenses on the outside of the bag rather than inside your lens.",
+        // //       ],
+        // //       spotlightLabel: "FIELD SURVIVAL PROTOCOL",
+        // //       spotlight:
+        // //         "1. Keep spare batteries inside inner thermal layers\n2. Disable Long Exposure Noise Reduction to shoot continuous sequences\n3. Bag camera before entering heated shelters to prevent frost condensation",
+        // //     },
+        // //     {
+        // //       id: "phot-303",
+        // //       number: "Class 03",
+        // //       title: "Composing Reflections & Silhouettes",
+        // //       duration: "9 min",
+        // //       difficulty: "Intermediate",
+        // //       summary:
+        // //         "Anchoring sweeping sky coronas with jagged fjord peaks, open coastal water, and warm cabin scale cues.",
+        // //       paragraphs: [
+        // //         "A photograph of the sky alone lacks scale. Placing a jagged mountain ridge, lone pine silhouette, or glowing A-frame cabin in the lower third immediately grounds the viewer.",
+        // //         "When shooting near unfrozen coastal fjords, low-angle compositions double the visual impact by capturing symmetrical aurora reflections across the water.",
+        // //       ],
+        // //       spotlightLabel: "COMPOSITIONAL RATIO RULE",
+        // //       spotlight:
+        // //         "Sky Horizon Split : 75% Sky / 25% Foreground Anchor\nFocal Length      : 14mm – 24mm Full-Frame Ultra-Wide",
+        // //     },
+        // //   ],
+        // // },
+        // // {
+        // //   id: "topic-lore",
+        // //   number: "04",
+        // //   title: "Cosmic Navigation & Folklore",
+        // //   shortTitle: "Navigation & Folklore",
+        // //   accent: "magenta",
+        // //   description:
+        // //     "Explore ancient circumpolar legends, indigenous Arctic sky-lore, and how polar explorers navigated beneath geomagnetic storms.",
+        // //   classes: [
+        // //     {
+        // //       id: "lore-401",
+        // //       number: "Class 01",
+        // //       title: "Revontulet: The Firefox of Lapland",
+        // //       duration: "5 min",
+        // //       difficulty: "Beginner",
+        // //       summary:
+        // //         'How Finnish folklore named the aurora "Fox Fires" after a mythical arctic fox sweeping sparks across snowy fells.',
+        // //       paragraphs: [
+        // //         'In Finnish, the Northern Lights are called Revontulet—literally translating to "Fox Fires." According to ancient Sámi and Finnish legend, a magical arctic fox ran so swiftly across the northern fells that its bushy tail struck snowdrifts, sending showers of sparks into the night sky.',
+        // //         "Interestingly, dry winter snow crystals kicked up in freezing air can generate static triboelectric charges, bridging poetic myth with atmospheric electricity.",
+        // //       ],
+        // //       spotlightLabel: "CIRCUMPOLAR ETYMOLOGY",
+        // //       spotlight:
+        // //         'Finnish  : Revontulet ("Fox Fires")\nNorse    : Norðrljós ("Northern Lights" — King’s Mirror, 1250 CE)\nLatin    : Aurora Borealis (coined by Galileo Galilei in 1619)',
+        // //     },
+        // //     {
+        // //       id: "lore-402",
+        // //       number: "Class 02",
+        // //       title: "Magnetic Storms & Compass Deviation",
+        // //       duration: "8 min",
+        // //       difficulty: "Intermediate",
+        // //       summary:
+        // //         "Why strong auroral substorms induce electric currents that deflect magnetic compass needles during polar expeditions.",
+        // //       paragraphs: [
+        // //         "The same ionospheric electrojet currents that illuminate the aurora generate secondary magnetic fields on Earth’s surface. During severe G4–G5 storms, a magnetic compass near the Arctic Circle can swing several degrees off true magnetic north.",
+        // //         "Modern polar expeditions pair celestial star fixes and multi-constellation GNSS receivers with traditional dead reckoning to navigate safely through geomagnetic storms.",
+        // //       ],
+        // //       spotlightLabel: "POLAR NAVIGATION RULE",
+        // //       spotlight:
+        // //         "During active overhead auroral coronas, cross-check magnetic compass headings against Polaris (North Star) and celestial azimuths.",
+        // //     },
+        // //     {
+        // //       id: "lore-403",
+        // //       number: "Class 03",
+        // //       title: "Planning Your Own 2027 Aurora Expedition",
+        // //       duration: "7 min",
+        // //       difficulty: "Beginner",
+        // //       summary:
+        // //         "Timing the equinox geomagnetic peak and choosing dark-sky microclimates across Tromsø, Abisko, and Yellowknife.",
+        // //       paragraphs: [
+        // //         "Statistical geomagnetic records show that auroral substorms peak around the March and September equinoxes due to the Russell-McPherron effect, when Earth’s tilt aligns favorably with the solar magnetic field.",
+        // //         "Pair equinox windows with new-moon dark skies and rain-shadow microclimates like Abisko, Sweden to maximize your odds of witnessing a full-sky corona.",
+        // //       ],
+        // //       spotlightLabel: "OPTIMAL EXPEDITION WINDOW",
+        // //       spotlight:
+        // //         "Peak Months  : September – October & February – March\nPrime Hours  : 21:30 – 02:00 Local Magnetic Midnight\nMoon Phase   : New Moon to First Quarter for faint violet structures",
+        // //     },
+        // //   ],
+        // },
+      ];
+
+      /* ==========================================================================
+       APPLICATION STATE & LOCALSTORAGE PERSISTENCE
+       ========================================================================== */
+      const STORAGE_KEY = "northern_lights_2027_progress_v1";
+
+      let appState = {
+        activeTopicId: CURRICULUM_DATA[0].id,
+        completedClassIds: [],
+        lastOpenedClassId: null,
+        modalClassId: null,
+      };
+
+      function loadProgress() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (saved && Array.isArray(saved.completedClassIds)) {
+            appState.completedClassIds = saved.completedClassIds;
+            appState.lastOpenedClassId = saved.lastOpenedClassId || null;
+            if (
+              saved.activeTopicId &&
+              CURRICULUM_DATA.some((t) => t.id === saved.activeTopicId)
+            ) {
+              appState.activeTopicId = saved.activeTopicId;
+            }
+          }
+        } catch (err) {
+          // Fallback gracefully if storage is restricted
+        }
+      }
+
+      function saveProgress() {
+        try {
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({
+              activeTopicId: appState.activeTopicId,
+              completedClassIds: appState.completedClassIds,
+              lastOpenedClassId: appState.lastOpenedClassId,
+            }),
+          );
+        } catch (err) {
+          // Ignore storage quota errors
+        }
+      }
+
+      function findClassById(classId) {
+        for (const topic of CURRICULUM_DATA) {
+          const idx = topic.classes.findIndex((c) => c.id === classId);
+          if (idx !== -1) {
+            return { topic, classItem: topic.classes[idx], index: idx };
+          }
+        }
+        return null;
+      }
+
+      /* ==========================================================================
+       RENDER TOPICS -> CLASSES CURRICULUM UI
+       ========================================================================== */
+      const topicsGridEl = document.getElementById("topics-grid");
+      const classesListEl = document.getElementById("classes-list");
+      const activeTopicTagEl = document.getElementById("active-topic-tag");
+      const activeTopicTitleEl = document.getElementById("active-topic-title");
+      const activeTopicDescEl = document.getElementById("active-topic-desc");
+      const activeTopicProgressTextEl = document.getElementById(
+        "active-topic-progress-text",
+      );
+      const activeTopicProgressBarEl = document.getElementById(
+        "active-topic-progress-bar",
+      );
+
+      const overallCompletedEl = document.getElementById(
+        "overall-completed-count",
+      );
+      const overallTotalEl = document.getElementById("overall-total-count");
+      const overallPercentEl = document.getElementById("overall-percent");
+
+      const resumeBtn = document.getElementById("resume-class-btn");
+      const resumeLabel = document.getElementById("resume-class-label");
+
+      const accentColorMap = {
+        emerald: {
+          text: "text-aurora-emerald",
+          border: "border-emerald-400/40",
+          bg: "bg-emerald-400/15",
+          bar: "from-aurora-emerald to-aurora-cyan",
+        },
+        cyan: {
+          text: "text-aurora-cyan",
+          border: "border-cyan-400/40",
+          bg: "bg-cyan-400/15",
+          bar: "from-aurora-cyan to-blue-400",
+        },
+        violet: {
+          text: "text-aurora-violet",
+          border: "border-purple-400/40",
+          bg: "bg-purple-400/15",
+          bar: "from-aurora-violet to-aurora-cyan",
+        },
+        magenta: {
+          text: "text-aurora-magenta",
+          border: "border-rose-400/40",
+          bg: "bg-rose-400/15",
+          bar: "from-aurora-magenta to-aurora-violet",
+        },
+      };
+
+      function updateGlobalTelemetry() {
+        const totalClasses = CURRICULUM_DATA.reduce(
+          (sum, t) => sum + t.classes.length,
+          0,
+        );
+        const completedCount = appState.completedClassIds.length;
+        const pct =
+          totalClasses > 0
+            ? Math.round((completedCount / totalClasses) * 100)
+            : 0;
+
+        overallCompletedEl.textContent = completedCount;
+        overallTotalEl.textContent = totalClasses;
+        overallPercentEl.textContent = `${pct}%`;
+
+        // Show 'Resume Class' button in Hero if user has started or completed any class
+        const targetResumeId =
+          appState.lastOpenedClassId ||
+          appState.completedClassIds[appState.completedClassIds.length - 1];
+        if (targetResumeId) {
+          const found = findClassById(targetResumeId);
+          if (found) {
+            resumeBtn.classList.remove("hidden");
+            resumeBtn.classList.add("inline-flex");
+            resumeLabel.textContent = `Resume: ${found.classItem.title}`;
+            resumeBtn.onclick = () => openClassModal(found.classItem.id);
+          }
+        }
+      }
+
+      function renderTopics() {
+        topicsGridEl.innerHTML = "";
+
+        CURRICULUM_DATA.forEach((topic) => {
+          const isActive = topic.id === appState.activeTopicId;
+          const completedInTopic = topic.classes.filter((c) =>
+            appState.completedClassIds.includes(c.id),
+          ).length;
+          const totalInTopic = topic.classes.length;
+          const pct = Math.round((completedInTopic / totalInTopic) * 100);
+          const palette =
+            accentColorMap[topic.accent] || accentColorMap.emerald;
+
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = `aurora-beam-card spatial-tilt text-left p-5 transition-all flex flex-col justify-between ${isActive ? "is-active ring-1 ring-emerald-400/50 bg-obsidian/95" : "opacity-85 hover:opacity-100"}`;
+          card.setAttribute("data-tilt", "");
+
+          card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="font-mono text-xs font-semibold ${palette.text}">TOPIC ${topic.number}</span>
+              <span class="px-2 py-0.5 rounded-md text-[11px] font-mono ${palette.bg} ${palette.text} border ${palette.border}">
+                ${completedInTopic}/${totalInTopic} Done
+              </span>
+            </div>
+            <h3 class="font-display text-lg font-bold text-white leading-snug mb-2">
+              ${topic.shortTitle}
+            </h3>
+            <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-4">
+              ${topic.description}
+            </p>
+          </div>
+          <div class="w-full pt-3 border-t border-white/10">
+            <div class="flex justify-between text-[11px] font-mono text-slate-400 mb-1.5">
+              <span>${totalInTopic} Classes</span>
+              <span class="${palette.text}">${pct}%</span>
+            </div>
+            <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+              <div class="h-full bg-gradient-to-r ${palette.bar} rounded-full transition-all duration-500" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+        `;
+
+          card.addEventListener("click", () => {
+            appState.activeTopicId = topic.id;
+            saveProgress();
+            renderTopics();
+            renderActiveTopicClasses(true);
+          });
+
+          topicsGridEl.appendChild(card);
+        });
+
+        attachTiltListeners();
+      }
+
+      function renderActiveTopicClasses(animate = false) {
+        const topic =
+          CURRICULUM_DATA.find((t) => t.id === appState.activeTopicId) ||
+          CURRICULUM_DATA[0];
+        const completedInTopic = topic.classes.filter((c) =>
+          appState.completedClassIds.includes(c.id),
+        ).length;
+        const totalInTopic = topic.classes.length;
+        const pct = Math.round((completedInTopic / totalInTopic) * 100);
+
+        activeTopicTagEl.textContent = `TOPIC ${topic.number} // ${totalInTopic} CLASSES`;
+        activeTopicTitleEl.textContent = topic.title;
+        activeTopicDescEl.textContent = topic.description;
+        activeTopicProgressTextEl.textContent = `${completedInTopic} / ${totalInTopic} Completed`;
+        activeTopicProgressBarEl.style.width = `${pct}%`;
+
+        if (animate) {
+          classesListEl.classList.remove("animate-panel-in");
+          void classesListEl.offsetWidth;
+          classesListEl.classList.add("animate-panel-in");
+        }
+
+        classesListEl.innerHTML = "";
+
+        topic.classes.forEach((cls) => {
+          const isDone = appState.completedClassIds.includes(cls.id);
+
+          const item = document.createElement("div");
+          item.className = `spatial-tilt rounded-2xl p-6 border transition-all flex flex-col justify-between ${
+            isDone
+              ? "bg-emerald-950/25 border-emerald-400/35"
+              : "bg-white/[0.03] hover:bg-white/[0.06] border-white/10 hover:border-cyan-400/40"
+          }`;
+          item.setAttribute("data-tilt", "");
+
+          item.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-xs font-semibold text-aurora-cyan">${cls.number}</span>
+                <span class="text-slate-600">•</span>
+                <span class="font-mono text-xs text-slate-400">${cls.duration}</span>
+                <span class="px-2 py-0.5 rounded bg-white/[0.06] font-mono text-[10px] text-slate-300">${cls.difficulty}</span>
+              </div>
+              <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                isDone
+                  ? "bg-aurora-emerald text-void shadow-[0_0_12px_rgba(0,255,170,0.6)]"
+                  : "border border-white/20 text-slate-500"
+              }" title="${isDone ? "Completed" : "Not started"}">
+                ${isDone ? "✓" : ""}
+              </span>
+            </div>
+
+            <h4 class="font-display text-lg sm:text-xl font-bold text-white mb-2">
+              ${cls.title}
+            </h4>
+            <p class="text-xs sm:text-sm text-slate-300/80 leading-relaxed mb-5">
+              ${cls.summary}
+            </p>
+          </div>
+
+          <div class="flex items-center justify-between pt-4 border-t border-white/10">
+            <span class="font-mono text-[11px] ${isDone ? "text-aurora-emerald" : "text-slate-400"}">
+              ${isDone ? "Completed" : "Ready to launch"}
+            </span>
+            <button
+              type="button"
+              class="launch-class-btn px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-gradient-to-r hover:from-aurora-emerald hover:to-aurora-cyan text-white hover:text-void transition-all"
+            >
+              ${isDone ? "Review Class →" : "Launch Class →"}
+            </button>
+          </div>
+        `;
+
+          item
+            .querySelector(".launch-class-btn")
+            .addEventListener("click", () => openClassModal(cls.id));
+          classesListEl.appendChild(item);
+        });
+
+        attachTiltListeners();
+      }
+
+      /* ==========================================================================
+       INTERACTIVE CLASS READER MODAL LOGIC
+       ========================================================================== */
+      const lessonModalEl = document.getElementById("lesson-modal");
+      const modalTopicBadgeEl = document.getElementById("modal-topic-badge");
+      const modalClassMetaEl = document.getElementById("modal-class-meta");
+      const modalClassTitleEl = document.getElementById("modal-class-title");
+      const modalClassSummaryEl = document.getElementById(
+        "modal-class-summary",
+      );
+      const modalClassBodyEl = document.getElementById("modal-class-body");
+      const modalSpotlightLabelEl = document.getElementById(
+        "modal-spotlight-label",
+      );
+      const modalSpotlightContentEl = document.getElementById(
+        "modal-spotlight-content",
+      );
+      const modalCompleteBtn = document.getElementById("modal-complete-btn");
+      const modalCompleteIcon = document.getElementById("modal-complete-icon");
+      const modalCompleteText = document.getElementById("modal-complete-text");
+      const modalPrevBtn = document.getElementById("modal-prev-btn");
+      const modalNextBtn = document.getElementById("modal-next-btn");
+      const closeModalBtn = document.getElementById("close-modal-btn");
+      const copySpotlightBtn = document.getElementById("copy-spotlight-btn");
+
+      function openClassModal(classId) {
+        const found = findClassById(classId);
+        if (!found) return;
+
+        const { topic, classItem, index } = found;
+        appState.modalClassId = classId;
+        appState.lastOpenedClassId = classId;
+        appState.activeTopicId = topic.id;
+        saveProgress();
+        updateGlobalTelemetry();
+        renderTopics();
+        renderActiveTopicClasses(false);
+
+        modalTopicBadgeEl.textContent = `TOPIC ${topic.number} · ${topic.shortTitle.toUpperCase()}`;
+        modalClassMetaEl.textContent = `${classItem.number} · ${classItem.duration} · ${classItem.difficulty}`;
+        modalClassTitleEl.textContent = classItem.title;
+        modalClassSummaryEl.textContent = classItem.summary;
+
+        modalClassBodyEl.innerHTML = classItem.paragraphs
+          .map((p) => `<p>${p}</p>`)
+          .join("");
+
+        modalSpotlightLabelEl.textContent = classItem.spotlightLabel;
+        modalSpotlightContentEl.textContent = classItem.spotlight;
+
+        updateModalCompleteButton(classId);
+
+        // Prev / Next navigation within the active topic
+        const prevClass = topic.classes[index - 1] || null;
+        const nextClass = topic.classes[index + 1] || null;
+
+        modalPrevBtn.disabled = !prevClass;
+        modalPrevBtn.onclick = prevClass
+          ? () => openClassModal(prevClass.id)
+          : null;
+
+        modalNextBtn.disabled = !nextClass;
+        modalNextBtn.onclick = nextClass
+          ? () => openClassModal(nextClass.id)
+          : null;
+
+        lessonModalEl.classList.remove("hidden-modal");
+        lessonModalEl.classList.add("open-modal");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeClassModal() {
+        lessonModalEl.classList.remove("open-modal");
+        lessonModalEl.classList.add("hidden-modal");
+        document.body.style.overflow = "";
+      }
+
+      function updateModalCompleteButton(classId) {
+        const isDone = appState.completedClassIds.includes(classId);
+        if (isDone) {
+          modalCompleteBtn.className =
+            "px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 bg-aurora-emerald text-void shadow-[0_0_24px_rgba(0,255,170,0.4)]";
+          modalCompleteIcon.textContent = "✓";
+          modalCompleteText.textContent = "Completed";
+        } else {
+          modalCompleteBtn.className =
+            "px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 bg-white/10 hover:bg-emerald-400/20 border border-emerald-400/40 text-emerald-200";
+          modalCompleteIcon.textContent = "○";
+          modalCompleteText.textContent = "Mark Class Complete";
+        }
+      }
+
+      modalCompleteBtn.addEventListener("click", () => {
+        const id = appState.modalClassId;
+        if (!id) return;
+
+        const idx = appState.completedClassIds.indexOf(id);
+        if (idx === -1) {
+          appState.completedClassIds.push(id);
+        } else {
+          appState.completedClassIds.splice(idx, 1);
+        }
+
+        saveProgress();
+        updateModalCompleteButton(id);
+        updateGlobalTelemetry();
+        renderTopics();
+        renderActiveTopicClasses(false);
+      });
+
+      closeModalBtn.addEventListener("click", closeClassModal);
+      lessonModalEl.addEventListener("click", (e) => {
+        if (e.target === lessonModalEl) closeClassModal();
+      });
+      window.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Escape" &&
+          lessonModalEl.classList.contains("open-modal")
+        ) {
+          closeClassModal();
+        }
+      });
+
+      copySpotlightBtn.addEventListener("click", () => {
+        const text = modalSpotlightContentEl.textContent;
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand("copy");
+          copySpotlightBtn.textContent = "Copied!";
+          setTimeout(() => {
+            copySpotlightBtn.textContent = "Copy";
+          }, 1600);
+        } catch (err) {
+          // Ignore copy fallback error
+        }
+        document.body.removeChild(textarea);
+      });
+
+      /* ==========================================================================
+       2027 SPATIAL INTERACTIONS: MAGNETIC BUTTONS, 3D TILT & SCROLL REVEAL
+       ========================================================================== */
+      function initMagneticButtons() {
+        document.querySelectorAll(".magnetic-btn").forEach((btn) => {
+          btn.addEventListener("pointermove", (e) => {
+            const rect = btn.getBoundingClientRect();
+            const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.22;
+            const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.22;
+            btn.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+          });
+          btn.addEventListener("pointerleave", () => {
+            btn.style.transform = "translate(0px, 0px)";
+          });
+        });
+      }
+
+      function attachTiltListeners() {
+        document.querySelectorAll("[data-tilt]").forEach((el) => {
+          if (el.dataset.tiltBound) return;
+          el.dataset.tiltBound = "true";
+
+          el.addEventListener("pointermove", (e) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const rx = ((y - rect.height / 2) / (rect.height / 2)) * -5;
+            const ry = ((x - rect.width / 2) / (rect.width / 2)) * 5;
+
+            el.style.setProperty("--mx", `${x}px`);
+            el.style.setProperty("--my", `${y}px`);
+            el.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateY(-3px)`;
+          });
+
+          el.addEventListener("pointerleave", () => {
+            el.style.transform =
+              "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0px)";
+          });
+        });
+      }
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document
+        .querySelectorAll(".reveal-item")
+        .forEach((el) => revealObserver.observe(el));
+
+      /* ==========================================================================
+       WEB AUDIO API COSMIC AMBIENT SYNTHESIZER
+       ========================================================================== */
+      let audioCtx = null;
+      let masterGain = null;
+      let isSoundOn = false;
+
+      const ambientToggle = document.getElementById("ambient-toggle");
+      const ambientDot = document.getElementById("ambient-dot");
+      const ambientText = document.getElementById("ambient-text");
+
+      ambientToggle.addEventListener("click", () => {
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContext();
+          masterGain = audioCtx.createGain();
+          masterGain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+          masterGain.connect(audioCtx.destination);
+
+          // Ethereal Arctic Fifths Chord (D2, A2, E3, A3)
+          [73.42, 110.0, 164.81, 220.0].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const filter = audioCtx.createBiquadFilter();
+            const gain = audioCtx.createGain();
+
+            osc.type = i % 2 === 0 ? "sine" : "triangle";
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            filter.type = "lowpass";
+            filter.frequency.setValueAtTime(280 + i * 75, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.055 / (i + 1), audioCtx.currentTime);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(masterGain);
+            osc.start();
+          });
+        }
+
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        isSoundOn = !isSoundOn;
+
+        if (isSoundOn) {
+          masterGain.gain.exponentialRampToValueAtTime(
+            0.32,
+            audioCtx.currentTime + 1.2,
+          );
+          ambientDot.classList.remove("bg-slate-500");
+          ambientDot.classList.add(
+            "bg-aurora-emerald",
+            "shadow-[0_0_10px_#00ffaa]",
+          );
+          ambientText.textContent = "Sound Active";
+        } else {
+          masterGain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            audioCtx.currentTime + 0.7,
+          );
+          ambientDot.classList.add("bg-slate-500");
+          ambientDot.classList.remove(
+            "bg-aurora-emerald",
+            "shadow-[0_0_10px_#00ffaa]",
+          );
+          ambientText.textContent = "Ambient Sound";
+        }
+      });
+
+      /* ==========================================================================
+       60FPS HTML5 CANVAS AURORA BOREALIS, STARFIELD & GLACIAL LAKE ENGINE
+       ========================================================================== */
+      const canvas = document.getElementById("aurora-canvas");
+      const ctx = canvas.getContext("2d");
+      const cursorAura = document.getElementById("cursor-aura");
+
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      const skyState = {
+        time: 0,
+        scrollY: 0,
+        pointer: {
+          x: width * 0.5,
+          y: height * 0.35,
+          tx: width * 0.5,
+          ty: height * 0.35,
+        },
+        stars: [],
+        meteors: [],
+        ripples: [],
+      };
+
+      const auroraRibbons = [
+        {
+          top: "rgba(181, 76, 255, 0)",
+          mid: "rgba(181, 76, 255, 0.32)",
+          bot: "rgba(0, 255, 170, 0.85)",
+        },
+        {
+          top: "rgba(0, 229, 255, 0)",
+          mid: "rgba(0, 229, 255, 0.34)",
+          bot: "rgba(0, 255, 170, 0.78)",
+        },
+        {
+          top: "rgba(255, 42, 133, 0)",
+          mid: "rgba(181, 76, 255, 0.22)",
+          bot: "rgba(0, 229, 255, 0.68)",
+        },
+      ];
+
+      function initCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const starCount = Math.min(Math.floor((width * height) / 7000), 220);
+        skyState.stars = Array.from({ length: starCount }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height * 0.78,
+          r: Math.random() * 1.45 + 0.3,
+          a: Math.random() * 0.75 + 0.25,
+          speed: Math.random() * 0.025 + 0.008,
+          phase: Math.random() * Math.PI * 2,
+          depth: Math.random() * 0.6 + 0.2,
+        }));
+      }
+
+      function spawnMeteor(x, y) {
+        const angle = Math.PI / 6 + Math.random() * 0.22;
+        const speed = 13 + Math.random() * 7;
+        skyState.meteors.push({
+          x: x ?? Math.random() * width * 0.85,
+          y: y ?? Math.random() * height * 0.3,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          len: 90 + Math.random() * 70,
+          life: 1.0,
+        });
+      }
+
+      function computeAuroraWave(x, t, layer) {
+        const f1 = 0.0021 + layer * 0.0005;
+        const f2 = 0.0052 - layer * 0.0007;
+        let y =
+          Math.sin(x * f1 + t * (0.72 + layer * 0.14)) * 52 +
+          Math.cos(x * f2 - t * (0.54 + layer * 0.11)) * 32 +
+          Math.sin(x * 0.0102 + t * 1.15 + layer) * 13;
+
+        // Cursor magnetic wave distortion
+        const dx = x - skyState.pointer.x;
+        const dist = Math.abs(dx);
+        if (dist < 280) {
+          const pull = Math.pow(1 - dist / 280, 2);
+          y += (skyState.pointer.y - height * 0.35) * 0.26 * pull;
+        }
+
+        // Click ripples
+        for (let i = 0; i < skyState.ripples.length; i++) {
+          const r = skyState.ripples[i];
+          const rDist = Math.abs(x - r.x);
+          if (rDist < r.radius + 80 && rDist > r.radius - 80) {
+            y += Math.sin((rDist - r.radius) * 0.08) * 24 * r.alpha;
+          }
+        }
+
+        return y;
+      }
+
+      function renderAuroraFrame() {
+        skyState.time += 0.011;
+        skyState.pointer.x += (skyState.pointer.tx - skyState.pointer.x) * 0.08;
+        skyState.pointer.y += (skyState.pointer.ty - skyState.pointer.y) * 0.08;
+
+        // Subtle fade when scrolled deep into curriculum for crisp readability
+        const scrollFade = Math.max(
+          0.45,
+          1 - skyState.scrollY / (height * 1.35),
+        );
+
+        // 1. Deep Midnight Void Sky
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
+        skyGrad.addColorStop(0, "#02040a");
+        skyGrad.addColorStop(0.45, "#040b1c");
+        skyGrad.addColorStop(0.8, "#071630");
+        skyGrad.addColorStop(1, "#03060d");
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // 2. Multi-Depth Twinkling Starfield
+        const pOffset = skyState.scrollY * 0.12;
+        for (let i = 0; i < skyState.stars.length; i++) {
+          const s = skyState.stars[i];
+          s.phase += s.speed;
+          const twinkle = 0.55 + 0.45 * Math.sin(s.phase);
+          const sy =
+            (((s.y - pOffset * s.depth) % (height * 0.8)) + height * 0.8) %
+            (height * 0.8);
+          ctx.beginPath();
+          ctx.arc(s.x, sy, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(232, 248, 255, ${s.a * twinkle})`;
+          ctx.fill();
+        }
+
+        // 3. Shooting Stars
+        if (Math.random() < 0.0045 && skyState.meteors.length < 2)
+          spawnMeteor();
+        for (let i = skyState.meteors.length - 1; i >= 0; i--) {
+          const m = skyState.meteors[i];
+          m.x += m.vx;
+          m.y += m.vy;
+          m.life -= 0.02;
+          if (m.life <= 0) {
+            skyState.meteors.splice(i, 1);
+            continue;
+          }
+          const tx = m.x - (m.vx / 16) * m.len;
+          const ty = m.y - (m.vy / 16) * m.len;
+          const grad = ctx.createLinearGradient(m.x, m.y, tx, ty);
+          grad.addColorStop(0, `rgba(255,255,255,${m.life})`);
+          grad.addColorStop(0.35, `rgba(0,255,170,${m.life * 0.6})`);
+          grad.addColorStop(1, "rgba(0,229,255,0)");
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(m.x, m.y);
+          ctx.lineTo(tx, ty);
+          ctx.stroke();
+        }
+
+        // 4. Multi-Layered Aurora Ribbons (Additive Lighter Blending)
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        const step = width < 640 ? 12 : 9;
+
+        auroraRibbons.forEach((ribbon, layerIdx) => {
+          const baseY = height * (0.24 + layerIdx * 0.075);
+          const curtainH = height * (0.28 + layerIdx * 0.035);
+
+          for (let x = 0; x <= width + step; x += step) {
+            const wy = computeAuroraWave(x, skyState.time, layerIdx);
+            const topY = baseY + wy - curtainH * 0.65;
+            const botY = baseY + wy + curtainH * 0.35;
+
+            const shimmer =
+              0.55 +
+              0.45 *
+                Math.sin(x * 0.032 + skyState.time * 2.3 + layerIdx * 1.7) *
+                Math.cos(x * 0.014 - skyState.time * 1.2);
+
+            const alpha = shimmer * 0.6 * scrollFade;
+            if (alpha <= 0.02) continue;
+
+            const grad = ctx.createLinearGradient(x, topY, x, botY);
+            grad.addColorStop(0, ribbon.top);
+            grad.addColorStop(0.45, ribbon.mid);
+            grad.addColorStop(0.88, ribbon.bot);
+            grad.addColorStop(1, "rgba(3, 6, 13, 0)");
+
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = grad;
+            ctx.fillRect(x, topY, step + 1.5, botY - topY);
+          }
+        });
+
+        // 5. Real-Time Glacial Lake Reflection Shimmer near Horizon
+        const lakeTop = height * 0.85;
+        for (let y = lakeTop; y < height; y += 7) {
+          const progress = (y - lakeTop) / (height - lakeTop);
+          const w = (1 - progress * 0.52) * width * 0.72;
+          const offsetX = Math.sin(y * 0.24 + skyState.time * 3.1) * 34;
+          const xStart = (width - w) * 0.5 + offsetX;
+          ctx.fillStyle = `rgba(0, 255, 170, ${0.13 * (1 - progress) * scrollFade})`;
+          ctx.fillRect(xStart, y, w, 2);
+        }
+
+        ctx.restore();
+
+        for (let i = skyState.ripples.length - 1; i >= 0; i--) {
+          skyState.ripples[i].radius += 7.5;
+          skyState.ripples[i].alpha -= 0.02;
+          if (skyState.ripples[i].alpha <= 0) skyState.ripples.splice(i, 1);
+        }
+
+        requestAnimationFrame(renderAuroraFrame);
+      }
+
+      window.addEventListener("resize", initCanvas);
+      window.addEventListener(
+        "pointermove",
+        (e) => {
+          skyState.pointer.tx = e.clientX;
+          skyState.pointer.ty = e.clientY;
+          if (cursorAura) {
+            cursorAura.style.left = `${e.clientX}px`;
+            cursorAura.style.top = `${e.clientY}px`;
+          }
+        },
+        { passive: true },
+      );
+
+      window.addEventListener("click", (e) => {
+        if (e.target.closest("button, a, input, #lesson-modal")) return;
+        skyState.ripples.push({
+          x: e.clientX,
+          y: e.clientY,
+          radius: 10,
+          alpha: 1.0,
+        });
+        spawnMeteor(e.clientX * 0.75, Math.max(30, e.clientY * 0.4));
+      });
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          skyState.scrollY = window.scrollY;
+        },
+        { passive: true },
+      );
+      const HERO_STEPS = [
+        {
+          tag: "01 ",
+          icon: "✦",
+          title: "Choose a Topic",
+          description:
+            "Select a focused discipline—from solar plasma physics to creative GLSL aurora mathematics.",
+          accentClass: "text-aurora-emerald",
+          badgeClass:
+            "bg-emerald-400/10 border-emerald-400/25 text-emerald-300",
+          delay: "0.5s",
+        },
+        {
+          tag: "02",
+          icon: "◈",
+          title: "Enter Interactive Classes",
+          description:
+            "Dive into structured classes with key concept spotlights, clean formulas, and zero clutter.",
+          accentClass: "text-aurora-cyan",
+          badgeClass: "bg-cyan-400/10 border-cyan-400/25 text-cyan-300",
+          delay: "0.6s",
+        },
+        {
+          tag: "03",
+          icon: "❖",
+          title: "Track Mastery",
+          description:
+            "Mark classes complete and watch your topic mastery rings update automatically in your browser.",
+          accentClass: "text-aurora-violet",
+          badgeClass: "bg-purple-400/10 border-purple-400/25 text-purple-300",
+          delay: "0.7s",
+        },
+      ];
+
+      function renderHeroSteps(containerId = "heroStepsGrid") {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = HERO_STEPS.map(
+          (step) => `
+      <div
+        class="aurora-beam-card spatial-tilt p-6 reveal-item is-visible"
+        style="transition-delay: ${step.delay}"
+        data-tilt
+      >
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-mono text-xs ${step.accentClass}">${step.tag}</span>
+          <span
+            class="w-7 h-7 rounded-lg border flex items-center justify-center text-xs ${step.badgeClass}"
+          >${step.icon}</span>
+        </div>
+        <h2 class="font-display text-lg font-bold text-white mb-1.5">
+          ${step.title}
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-300/80 leading-relaxed">
+          ${step.description}
+        </p>
+      </div>
+    `,
+        ).join("");
+      }
+
+      renderHeroSteps();
+
+      /* ==========================================================================
+       BOOTSTRAP APPLICATION
+       ========================================================================== */
+      loadProgress();
+      updateGlobalTelemetry();
+      renderTopics();
+      renderActiveTopicClasses(false);
+      initMagneticButtons();
+      attachTiltListeners();
+      initCanvas();
+      spawnMeteor(width * 0.22, height * 0.14);
+      requestAnimationFrame(renderAuroraFrame);
+    </script>
+  </body>
+</html>
