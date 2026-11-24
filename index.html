@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To the Northern Lights</title>
-    <meta
-      name="description"
-      content="Efforts to change our lives..."
-    />
+    <meta name="description" content="Efforts to change our lives..." />
 
     <!-- Google Fonts: Space Grotesk, Syne & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -651,7 +648,7 @@
       aria-labelledby="modal-class-title"
     >
       <div
-        class="modal-card relative w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-obsidian rounded-3xl border border-white/15 p-6 sm:p-10 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
+        class="modal-card relative w-[90vw] max-w-none max-h-[90vh] overflow-y-auto glass-obsidian rounded-3xl border border-white/15 p-6 sm:p-10 shadow-[0_30px_90px_rgba(0,0,0,0.85)]"
       >
         <!-- Top Bar: Topic Breadcrumb & Close Button -->
         <div
@@ -774,7 +771,6 @@
           <p class="font-display text-sm font-bold text-white">
             To the Northern Lights
           </p>
-          
         </div>
 
         <a
@@ -1360,8 +1356,7 @@
         modalClassSummaryEl.textContent = classItem.summary;
 
         spotlightBoxEl.style.display = "none";
-        modalClassBodyEl.innerHTML =
-          '<p class="text-slate-400">Loading…</p>';
+        modalClassBodyEl.innerHTML = '<p class="text-slate-400">Loading…</p>';
         loadClassContent(classId);
 
         updateModalCompleteButton(classId);

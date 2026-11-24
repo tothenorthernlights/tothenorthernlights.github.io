@@ -1,0 +1,323 @@
+{
+  "title": "Variables Quiz",
+  "questions": [
+    {
+      "id": "e1",
+      "level": "easy",
+      "q": "What is a variable best described as?",
+      "options": [
+        "A labeled box in memory that stores a value",
+        "A button on the keyboard",
+        "A type of error message",
+        "A program that runs by itself"
+      ],
+      "answer": 0,
+      "explain": "A variable is a labeled box: the label is its name, and what's inside is its value."
+    },
+    {
+      "id": "e2",
+      "level": "easy",
+      "q": "In this code, what is the name of the variable?",
+      "code": "score = 10",
+      "options": ["=", "score", "10", "Python"],
+      "answer": 1,
+      "explain": "The name is the label on the box. Here the label is score."
+    },
+    {
+      "id": "e3",
+      "level": "easy",
+      "q": "In score = 10, what does the = sign do?",
+      "options": [
+        "Checks if two things are equal",
+        "Puts the value into the box",
+        "Subtracts a number",
+        "Ends the line"
+      ],
+      "answer": 1,
+      "explain": "In code, = means \"put this into the box\", not \"equals\" like in math."
+    },
+    {
+      "id": "e4",
+      "level": "easy",
+      "q": "How do you create a variable in Python?",
+      "options": [
+        "Write let before the name",
+        "Write the name, then =, then the value",
+        "Write var before the name",
+        "Use the word box"
+      ],
+      "answer": 1,
+      "explain": "Python needs no special keyword. Writing name = value creates the box and fills it."
+    },
+    {
+      "id": "e5",
+      "level": "easy",
+      "q": "Which of these is a valid variable name?",
+      "options": ["player name", "player_name", "player-name", "player!"],
+      "answer": 1,
+      "explain": "No spaces, dashes or symbols are allowed. player_name uses only letters and an underscore."
+    },
+    {
+      "id": "e6",
+      "level": "easy",
+      "q": "Why is it called a \"variable\"?",
+      "options": [
+        "Because its name can be very long",
+        "Because its value can vary (change)",
+        "Because it only holds numbers",
+        "Because it can never change"
+      ],
+      "answer": 1,
+      "explain": "You can swap the contents of the box, so the value can vary."
+    },
+    {
+      "id": "e7",
+      "level": "easy",
+      "q": "Which of these is NOT allowed in a variable name?",
+      "options": [
+        "A space",
+        "An underscore",
+        "A number (not at the start)",
+        "A capital letter"
+      ],
+      "answer": 0,
+      "explain": "Python thinks a space means a new word has started, so spaces are not allowed."
+    },
+    {
+      "id": "e8",
+      "level": "easy",
+      "q": "Which name follows Python's snake_case style?",
+      "options": ["totalPrice", "TotalPrice", "total_price", "total-price"],
+      "answer": 2,
+      "explain": "snake_case uses lowercase words joined by underscores: total_price."
+    },
+    {
+      "id": "e9",
+      "level": "easy",
+      "q": "In this code, what is the value stored in the box?",
+      "code": "player_name = \"Sam\"",
+      "options": ["player_name", "=", "\"Sam\"", "print"],
+      "answer": 2,
+      "explain": "The value is what's inside the box. The name is player_name, the value is \"Sam\"."
+    },
+    {
+      "id": "e10",
+      "level": "easy",
+      "q": "Which name is NOT allowed because it starts with a number?",
+      "options": ["player1", "1player", "_player", "player_one"],
+      "answer": 1,
+      "explain": "Numbers are fine inside a name (player1), but a name can't start with one."
+    },
+    {
+      "id": "m1",
+      "level": "medium",
+      "q": "What is the relationship between score and Score?",
+      "options": [
+        "They are the same variable",
+        "They are two different variables",
+        "One of them causes an error",
+        "Both are keywords"
+      ],
+      "answer": 1,
+      "explain": "Capital letters matter. score and Score are two completely different boxes."
+    },
+    {
+      "id": "m2",
+      "level": "medium",
+      "q": "Why is total-price not a valid variable name?",
+      "options": [
+        "It is too long",
+        "The dash is read as \"minus\"",
+        "It contains a number",
+        "It is in snake_case"
+      ],
+      "answer": 1,
+      "explain": "Python reads total-price as total minus price."
+    },
+    {
+      "id": "m3",
+      "level": "medium",
+      "q": "Which is the best name for a variable that stores a user's age?",
+      "options": ["x", "stuff", "user_age", "a1"],
+      "answer": 2,
+      "explain": "Good names describe what's inside the box. user_age says exactly what it holds."
+    },
+    {
+      "id": "m4",
+      "level": "medium",
+      "q": "After running this code, what does score hold?",
+      "code": "score = 10\nscore = 11",
+      "options": ["10", "11", "21", "Error"],
+      "answer": 1,
+      "explain": "The second line swaps the contents of the box. The old value 10 is replaced by 11."
+    },
+    {
+      "id": "m5",
+      "level": "medium",
+      "q": "Which name is allowed?",
+      "options": ["_secret", "my score", "9lives", "class"],
+      "answer": 0,
+      "explain": "Underscores are allowed. The others have a space, start with a number, or are a keyword."
+    },
+    {
+      "id": "m6",
+      "level": "medium",
+      "q": "Why can't you name a variable class?",
+      "options": [
+        "It is too short",
+        "It already has a special job in Python (it's a keyword)",
+        "It has no underscore",
+        "It contains a number"
+      ],
+      "answer": 1,
+      "explain": "Keywords already have a special meaning, like naming your shop \"STOP\"."
+    },
+    {
+      "id": "m7",
+      "level": "medium",
+      "q": "Which is the snake_case version of \"first name\"?",
+      "options": ["firstname", "first_name", "firstName", "First Name"],
+      "answer": 1,
+      "explain": "Lowercase words joined by an underscore: first_name."
+    },
+    {
+      "id": "m8",
+      "level": "medium",
+      "q": "Which is a real benefit of variables?",
+      "options": [
+        "They make the computer faster",
+        "You can change a value in one place instead of many",
+        "They stop all errors",
+        "They remove the need for names"
+      ],
+      "answer": 1,
+      "explain": "If the tax rate changes, you update the one box instead of hunting through hundreds of lines."
+    },
+    {
+      "id": "m9",
+      "level": "medium",
+      "q": "Which name is valid?",
+      "options": ["score2", "2score", "score-2", "score 2"],
+      "answer": 0,
+      "explain": "score2 only uses letters and a number, and the number isn't first."
+    },
+    {
+      "id": "m10",
+      "level": "medium",
+      "q": "Which name is legal but unhelpful?",
+      "options": ["player_name", "x", "total-price", "2nd_place"],
+      "answer": 1,
+      "explain": "x is allowed, but it doesn't tell you what it holds. The other two are not allowed at all."
+    },
+    {
+      "id": "h1",
+      "level": "hard",
+      "q": "What does lives hold after this code runs?",
+      "code": "lives = 3\nlives = lives - 1",
+      "options": ["3", "1", "2", "Error"],
+      "answer": 2,
+      "explain": "Python takes the 3 out of the box, subtracts 1 to get 2, and puts 2 back in."
+    },
+    {
+      "id": "h2",
+      "level": "hard",
+      "q": "Which line would cause an error?",
+      "options": [
+        "price = 5",
+        "_count = 0",
+        "user$name = \"Al\"",
+        "user_name2 = \"Al\""
+      ],
+      "answer": 2,
+      "explain": "Only letters, numbers and underscores are allowed, so the $ breaks the rules. (Some other languages allow $, but Python doesn't.)"
+    },
+    {
+      "id": "h3",
+      "level": "hard",
+      "q": "The code below tries to use a variable called Score. What happens?",
+      "code": "score = 5\ntotal = Score + 1",
+      "options": [
+        "It uses 5 and total becomes 6",
+        "It errors, because there is no box named Score",
+        "total becomes the word \"Score1\"",
+        "Python converts Score to lowercase"
+      ],
+      "answer": 1,
+      "explain": "Capital letters matter. Only score exists, so asking for Score finds no box (Python shows a NameError)."
+    },
+    {
+      "id": "h4",
+      "level": "hard",
+      "q": "How many of these names are NOT valid?\n\nfirst name   3rd_place   class   first_name_",
+      "options": ["1", "2", "3", "4"],
+      "answer": 2,
+      "explain": "first name has a space, 3rd_place starts with a number, and class is a keyword. first_name_ is fine."
+    },
+    {
+      "id": "h5",
+      "level": "hard",
+      "q": "Which is the best name for a variable that stores the number of items in a shopping cart?",
+      "options": ["c", "stuff", "cart-items", "cart_item_count"],
+      "answer": 3,
+      "explain": "cart_item_count is valid, descriptive, and uses snake_case. cart-items isn't allowed because of the dash."
+    },
+    {
+      "id": "h6",
+      "level": "hard",
+      "q": "Which pair of names refers to TWO different variables?",
+      "options": [
+        "user_age and user_age",
+        "price and price",
+        "Total and total",
+        "count and count"
+      ],
+      "answer": 2,
+      "explain": "Capital letters matter, so Total and total are different boxes."
+    },
+    {
+      "id": "h7",
+      "level": "hard",
+      "q": "What does final_price hold?",
+      "code": "price = 20\ndiscount = 5\nfinal_price = price - discount",
+      "options": ["25", "15", "5", "20"],
+      "answer": 1,
+      "explain": "Python reads the values inside the price and discount boxes: 20 - 5 = 15."
+    },
+    {
+      "id": "h8",
+      "level": "hard",
+      "q": "Which statement is TRUE?",
+      "options": [
+        "Underscores are allowed in names",
+        "Capital letters are ignored in names",
+        "Names can't contain numbers",
+        "= means \"equals\" like in math"
+      ],
+      "answer": 0,
+      "explain": "Underscores are allowed. Capitals matter, numbers are fine if not first, and = means \"put into the box\"."
+    },
+    {
+      "id": "h9",
+      "level": "hard",
+      "q": "What does x hold after this code runs?",
+      "code": "x = 4\nx = x + 1\nx = x * 2",
+      "options": ["5", "8", "10", "12"],
+      "answer": 2,
+      "explain": "Step by step: x starts at 4, then becomes 5, then 5 * 2 = 10."
+    },
+    {
+      "id": "h10",
+      "level": "hard",
+      "q": "This line fails. Why, and what's the best fix?",
+      "code": "class = \"Math\"",
+      "options": [
+        "It needs a number, so change \"Math\" to 5",
+        "class is a reserved keyword, so rename it (for example subject)",
+        "The = sign is wrong, so use ==",
+        "Variable names must be uppercase, so use CLASS"
+      ],
+      "answer": 1,
+      "explain": "class already has a special job in Python, so you need a different name such as subject."
+    }
+  ]
+}

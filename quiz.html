@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz · To the Northern Lights</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Syne", "sans-serif"],
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            colors: {
+              void: "#03060d",
+              obsidian: "#070d1a",
+              aurora: {
+                emerald: "#00ffaa",
+                cyan: "#00e5ff",
+                violet: "#b54cff",
+                magenta: "#ff2a85",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        background-color: #03060d;
+        color: #eef6ff;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      /* Simple static aurora glow (no canvas needed on this page) */
+      body {
+        background-image:
+          radial-gradient(
+            ellipse 60% 40% at 20% 0%,
+            rgba(0, 255, 170, 0.14),
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 55% 40% at 85% 5%,
+            rgba(181, 76, 255, 0.14),
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 70% 35% at 50% 0%,
+            rgba(0, 229, 255, 0.1),
+            transparent 70%
+          );
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        min-height: 100vh;
+      }
+      .glass-obsidian {
+        background: rgba(8, 14, 28, 0.56);
+        backdrop-filter: blur(20px) saturate(140%);
+        -webkit-backdrop-filter: blur(20px) saturate(140%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow:
+          0 24px 60px rgba(0, 0, 0, 0.65),
+          inset 0 1px 0 rgba(255, 255, 255, 0.09);
+      }
+    </style>
+  </head>
+
+  <body
+    class="antialiased selection:bg-emerald-400/30 selection:text-emerald-100"
+  >
+    <!-- Navbar -->
+    <header class="px-4 sm:px-8 pt-4">
+      <nav
+        class="max-w-3xl mx-auto glass-obsidian rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between"
+      >
+        <a
+          href="index.html"
+          class="font-display font-bold tracking-tight text-sm sm:text-base text-white"
+        >
+          To the Northern Lights
+        </a>
+        <a
+          href="index.html#curriculum"
+          class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-200 hover:text-white hover:bg-white/10 transition-all"
+        >
+          ← Back to classes
+        </a>
+      </nav>
+    </header>
+
+    <!-- Quiz content -->
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10 pb-20">
+      <div class="glass-obsidian rounded-3xl p-6 sm:p-10">
+        <span
+          class="font-mono text-xs uppercase tracking-[0.26em] text-aurora-emerald"
+          >Quiz</span
+        >
+        <h1
+          id="quiz-title"
+          class="font-display text-3xl sm:text-4xl font-bold text-white mt-2 mb-8"
+        >
+          Loading…
+        </h1>
+        <div id="quiz-root"></div>
+      </div>
+    </main>
+
+    <script src="content/quiz.js"></script>
+    <script>
+      const quizId = new URLSearchParams(location.search).get("id");
+      const root = document.getElementById("quiz-root");
+      const titleEl = document.getElementById("quiz-title");
+
+      if (!quizId) {
+        titleEl.textContent = "No quiz selected";
+        root.innerHTML =
+          '<p class="text-slate-400">Go back and pick a class.</p>';
+      } else {
+        // Fetch once just to read the title, then let quiz.js render everything
+        fetch(`content/${quizId}.json`)
+          .then((r) => (r.ok ? r.json() : Promise.reject()))
+          .then((quiz) => {
+            titleEl.textContent = quiz.title || "Quiz";
+            document.title = `${quiz.title || "Quiz"} · To the Northern Lights`;
+            renderQuiz(quiz, root);
+          })
+          .catch(() => {
+            titleEl.textContent = "Quiz not found";
+            root.innerHTML =
+              '<p class="text-slate-400">This quiz isn\'t ready yet.</p>';
+          });
+      }
+    </script>
+  </body>
+</html>

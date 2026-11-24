@@ -1,3 +1,245 @@
-<p>A short paragraph</p>
-<pre data-label="Spot Light Label">Spotlight</pre>
-<div>yjjhkjhkjkhkhhj</div>
+<p>
+  Imagine you're moving house and packing everything into cardboard boxes. If
+  you don't write anything on the boxes, you'll have no idea what's inside each
+  one. So you grab a marker and write <strong>"Kitchen"</strong>,
+  <strong>"Books"</strong>, <strong>"Winter clothes"</strong>.
+</p>
+
+<p>
+  A <strong>variable</strong> is exactly that: a
+  <strong>labeled box inside your computer's memory</strong>. The label is the
+  variable's <em>name</em>, and what's inside the box is its <em>value</em>.
+</p>
+
+<h3 class="font-display text-lg sm:text-xl font-bold text-white pt-2">
+  Why do we even need variables?
+</h3>
+
+<p>
+  A program constantly has to remember things: a player's score, a user's name,
+  the price of an item. Without variables, the computer would have no place to
+  keep any of it. Variables help in three ways:
+</p>
+
+<ul class="list-disc pl-6 space-y-2">
+  <li>
+    <strong>They remember things.</strong> Like a phone's contact list: you
+    don't memorize your friend's number, you just tap their name. The variable
+    is the name, and the number is the value.
+  </li>
+  <li>
+    <strong>They let you change things in one place.</strong> If a shop's tax
+    rate changes, you update it once in the box instead of hunting through
+    hundreds of lines of code.
+  </li>
+  <li>
+    <strong>They make code readable.</strong>
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >price * 2</code
+    >
+    makes sense at a glance.
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >49.99 * 2</code
+    >
+    makes you ask, "what is 49.99?"
+  </li>
+</ul>
+
+<h3 class="font-display text-lg sm:text-xl font-bold text-white pt-2">
+  Creating your first variable
+</h3>
+
+<p>
+  In JavaScript, you make a box with the word
+  <code
+    class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+    >let</code
+  >, give it a name, and put something inside with
+  <code
+    class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+    >=</code
+  >:
+</p>
+
+<div
+  class="rounded-xl bg-void/90 border border-white/10 p-4 font-mono text-sm text-cyan-100 whitespace-pre-wrap"
+>
+  let playerName = "Sam"; let score = 10;
+</div>
+
+<p>
+  Read it like a sentence:
+  <em
+    >"Make a box called <strong>playerName</strong> and put
+    <strong>Sam</strong> inside."</em
+  >
+  The
+  <code
+    class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+    >=</code
+  >
+  sign here doesn't mean "equals" like in math. It means
+  <strong>"put this into the box"</strong>.
+</p>
+
+<p>Boxes can be re-packed too. If Sam scores a point, you swap the contents:</p>
+
+<div
+  class="rounded-xl bg-void/90 border border-white/10 p-4 font-mono text-sm text-cyan-100 whitespace-pre-wrap"
+>
+  score = 11;
+</div>
+
+<p>
+  That's why they're called <em>variables</em>: the value can
+  <strong>vary</strong>.
+</p>
+
+<h3 class="font-display text-lg sm:text-xl font-bold text-white pt-2">
+  The rules for naming variables
+</h3>
+
+<p>
+  You get to choose the label, but there are some
+  <strong>rules you must follow</strong>, or the computer will refuse to run
+  your code:
+</p>
+
+<ul class="list-disc pl-6 space-y-2">
+  <li>
+    <strong>No spaces.</strong> Use
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >playerName</code
+    >, not
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >player name</code
+    >. The computer thinks a space means a new word has started.
+  </li>
+  <li>
+    <strong
+      >Only letters, numbers, underscores (<code
+        class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+        >_</code
+      >) and dollar signs (<code
+        class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+        >$</code
+      >).</strong
+    >
+    Symbols like
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >- ! @ #</code
+    >
+    are not allowed. The dash is the common trap, because the computer reads it
+    as "minus".
+  </li>
+  <li>
+    <strong>Can't start with a number.</strong>
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >player1</code
+    >
+    is fine,
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >1player</code
+    >
+    is not.
+  </li>
+  <li>
+    <strong>Can't be a reserved word.</strong> Words like
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >let</code
+    >,
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >if</code
+    >
+    and
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >class</code
+    >
+    already have a special job. It's like naming your shop "STOP": everyone
+    would be confused.
+  </li>
+  <li>
+    <strong>Capital letters matter.</strong>
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >score</code
+    >
+    and
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >Score</code
+    >
+    are two completely different boxes, just like "Sam" and "sam" would be two
+    different labels.
+  </li>
+</ul>
+
+<h3 class="font-display text-lg sm:text-xl font-bold text-white pt-2">
+  Good habits (not rules, but strongly recommended)
+</h3>
+
+<ul class="list-disc pl-6 space-y-2">
+  <li>
+    <strong>Use names that describe the contents.</strong> A box labeled "Stuff"
+    is useless.
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >userAge</code
+    >
+    beats
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >x</code
+    >
+    every time.
+  </li>
+  <li>
+    <strong>Use camelCase for multiple words.</strong> Start lowercase, then
+    capitalize each new word:
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >totalPrice</code
+    >,
+    <code
+      class="px-1.5 py-0.5 rounded bg-white/10 text-cyan-200 font-mono text-sm"
+      >firstName</code
+    >. The capitals look like the humps on a camel.
+  </li>
+  <li>
+    <strong>Be consistent.</strong> Pick one style and stick with it, so your
+    future self can read your code easily.
+  </li>
+</ul>
+
+<p>
+  Not sure if a name is allowed? Check the cheat sheet below. Notice that the
+  bad names break exactly one of the rules above.
+</p>
+
+<pre data-label="NAME CHEAT SHEET">
+✅ GOOD NAMES
+playerName      (clear + camelCase)
+totalPrice      (says what it holds)
+score2          (numbers are fine, just not first)
+_secret         (underscore is allowed)
+
+❌ BAD NAMES
+player name     (has a space)
+2ndPlace        (starts with a number)
+total-price     (dash is read as "minus")
+let             (reserved word)
+
+⚠️ LEGAL BUT UNHELPFUL
+x               (x of what?)
+stuff           (what stuff?)</pre
+>
