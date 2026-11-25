@@ -1,0 +1,310 @@
+{
+  "title": "Printing Variables in Strings Quiz",
+  "questions": [
+    {
+      "id": "e1",
+      "level": "easy",
+      "q": "What does the comma do between items in a print() call?",
+      "code": "print(\"Hello\", name)",
+      "options": [
+        "Adds a space between the items automatically",
+        "Joins the items with no space",
+        "Causes an error",
+        "Prints the items on separate lines"
+      ],
+      "answer": 0,
+      "explain": "The comma tells print() there are several items, and it puts one space between them for you."
+    },
+    {
+      "id": "e2",
+      "level": "easy",
+      "q": "What does this code print?",
+      "code": "print(\"Hello \" + \"Sam\")",
+      "options": ["Hello Sam", "HelloSam", "Hello + Sam", "Error"],
+      "answer": 0,
+      "explain": "+ joins the two strings. The space is already inside \"Hello \", so the result is Hello Sam."
+    },
+    {
+      "id": "e3",
+      "level": "easy",
+      "q": "Which symbol joins two strings together?",
+      "options": ["&", "+", "-", "*"],
+      "answer": 1,
+      "explain": "Between two strings, + glues them together. This is called concatenation."
+    },
+    {
+      "id": "e4",
+      "level": "easy",
+      "q": "What does this code print?",
+      "code": "print(\"Age:\", 12)",
+      "options": ["Age:12", "Age: 12", "Error", "\"Age:\" 12"],
+      "answer": 1,
+      "explain": "The comma adds a space, and it happily accepts a number next to a string."
+    },
+    {
+      "id": "e5",
+      "level": "easy",
+      "q": "What is the data type of \"12\" (with quotes)?",
+      "options": ["int", "float", "str", "bool"],
+      "answer": 2,
+      "explain": "Anything inside quotes is text, which Python calls a string (str), even if it looks like a number."
+    },
+    {
+      "id": "e6",
+      "level": "easy",
+      "q": "What is the data type of 12 (without quotes)?",
+      "options": ["str", "int", "text", "char"],
+      "answer": 1,
+      "explain": "A whole number without quotes is an integer (int), which you can do maths with."
+    },
+    {
+      "id": "e7",
+      "level": "easy",
+      "q": "Which function turns the number 12 into the text \"12\"?",
+      "options": ["int()", "num()", "text()", "str()"],
+      "answer": 3,
+      "explain": "str() converts a value into a string."
+    },
+    {
+      "id": "e8",
+      "level": "easy",
+      "q": "Which function turns the text \"5\" into the number 5?",
+      "options": ["int()", "str()", "print()", "type()"],
+      "answer": 0,
+      "explain": "int() converts text that looks like a whole number into a real integer."
+    },
+    {
+      "id": "e9",
+      "level": "easy",
+      "q": "What goes right before the opening quote to make an f-string?",
+      "options": ["s", "f", "$", "#"],
+      "answer": 1,
+      "explain": "Writing f before the quote, like f\"...\", tells Python to look for variables inside { }."
+    },
+    {
+      "id": "e10",
+      "level": "easy",
+      "q": "In an f-string, where do you put a variable?",
+      "code": "name = \"Aisha\"\nprint(f\"Hello ____\")",
+      "options": [
+        "Inside curly braces, like {name}",
+        "Inside square brackets, like [name]",
+        "Inside brackets, like (name)",
+        "After a plus sign, like +name"
+      ],
+      "answer": 0,
+      "explain": "Curly braces {name} are replaced by the value of the variable."
+    },
+    {
+      "id": "m1",
+      "level": "medium",
+      "q": "What does this code print?",
+      "code": "print(\"Hello\" + \"Sam\")",
+      "options": ["Hello Sam", "HelloSam", "Hello+Sam", "Error"],
+      "answer": 1,
+      "explain": "+ adds no space. If you want one, you have to type it inside the quotes yourself."
+    },
+    {
+      "id": "m2",
+      "level": "medium",
+      "q": "What does this code print?",
+      "code": "print(\"$\", \"5\")",
+      "options": ["$5", "$ 5", "$, 5", "Error"],
+      "answer": 1,
+      "explain": "The comma always puts a space between items, so you get $ 5 and not $5."
+    },
+    {
+      "id": "m3",
+      "level": "medium",
+      "q": "Why does this line fail?",
+      "code": "print(\"I am \" + 12)",
+      "options": [
+        "Python can't join a string and an integer with +",
+        "print() can't show numbers",
+        "The quotes are in the wrong place",
+        "12 is too big a number"
+      ],
+      "answer": 0,
+      "explain": "It raises a TypeError. + joins text to text or adds number to number, but won't guess when you mix them."
+    },
+    {
+      "id": "m4",
+      "level": "medium",
+      "q": "After this code runs, what is the type of age?",
+      "code": "age = 12\nprint(str(age))",
+      "options": ["str", "int", "float", "It becomes unusable"],
+      "answer": 1,
+      "explain": "str(age) makes a temporary text copy for that one place. The variable age is still an int."
+    },
+    {
+      "id": "m5",
+      "level": "medium",
+      "q": "What does this code print?",
+      "code": "print(\"5\" + \"5\")",
+      "options": ["10", "55", "5 5", "Error"],
+      "answer": 1,
+      "explain": "Both are strings, so + joins them into 55."
+    },
+    {
+      "id": "m6",
+      "level": "medium",
+      "q": "What does this code print?",
+      "code": "print(int(\"5\") + int(\"5\"))",
+      "options": ["55", "10", "\"10\"", "Error"],
+      "answer": 1,
+      "explain": "int() turns both into numbers first, so + adds them: 10."
+    },
+    {
+      "id": "m7",
+      "level": "medium",
+      "q": "items is the number 7. Which line prints Total: 7 without an error?",
+      "options": [
+        "print(\"Total: \" + items)",
+        "print(\"Total:\", items)",
+        "print(\"Total: \" + int(items))",
+        "print(\"Total: \" + 7)"
+      ],
+      "answer": 1,
+      "explain": "The comma accepts mixed types. The other lines try to join a string with a number, which raises a TypeError."
+    },
+    {
+      "id": "m8",
+      "level": "medium",
+      "q": "What does this code print?",
+      "code": "name = \"Aisha\"\nprint(f\"Hello {name}\")",
+      "options": ["Hello name", "Hello {name}", "Hello Aisha", "Error"],
+      "answer": 2,
+      "explain": "The f-string replaces {name} with the value stored in name."
+    },
+    {
+      "id": "m9",
+      "level": "medium",
+      "q": "What does this code print? (Notice there is no f.)",
+      "code": "name = \"Aisha\"\nprint(\"Hello {name}\")",
+      "options": ["Hello Aisha", "Hello {name}", "Hello name", "Error"],
+      "answer": 1,
+      "explain": "Without the f, Python treats the braces as plain text and prints them as they are."
+    },
+    {
+      "id": "m10",
+      "level": "medium",
+      "q": "If a user types 25 into input(), what type is the value you get back?",
+      "options": ["int", "float", "str", "It depends on what they type"],
+      "answer": 2,
+      "explain": "input() always returns a string. Use int() if you need to do maths with it."
+    },
+    {
+      "id": "h1",
+      "level": "hard",
+      "q": "Which line runs without an error?",
+      "options": [
+        "print(\"5\" + 5)",
+        "print(\"5\" + str(5))",
+        "print(5 + \"5\")",
+        "print(int(\"5\") + \"5\")"
+      ],
+      "answer": 1,
+      "explain": "Only str(5) makes both sides strings. The others mix a string with an int."
+    },
+    {
+      "id": "h2",
+      "level": "hard",
+      "q": "Which line prints 7?",
+      "code": "x = \"3\"\ny = 4",
+      "options": [
+        "print(x + y)",
+        "print(x + str(y))",
+        "print(int(x) + y)",
+        "print(str(x) + y)"
+      ],
+      "answer": 2,
+      "explain": "int(x) makes both sides numbers, so 3 + 4 = 7. print(x + str(y)) would print 34, and the others raise an error."
+    },
+    {
+      "id": "h3",
+      "level": "hard",
+      "q": "What does this code print?",
+      "code": "print(\"3\" + str(4))",
+      "options": ["7", "34", "3 4", "Error"],
+      "answer": 1,
+      "explain": "Both sides are now strings, so + joins them: 34."
+    },
+    {
+      "id": "h4",
+      "level": "hard",
+      "q": "What does this code print?",
+      "code": "apples = 3\nprice = 2.5\nprint(f\"{apples} apples cost {apples * price}\")",
+      "options": [
+        "3 apples cost 7.5",
+        "3 apples cost 2.52.52.5",
+        "{apples} apples cost {apples * price}",
+        "Error"
+      ],
+      "answer": 0,
+      "explain": "f-strings can run expressions inside the braces. 3 * 2.5 = 7.5, and no str() is needed."
+    },
+    {
+      "id": "h5",
+      "level": "hard",
+      "q": "price is the string \"5\". Which option prints $5 with no space?",
+      "code": "price = \"5\"\n\nA) print(\"$\", price)\nB) print(\"$\" + price)\nC) print(f\"${price}\")",
+      "options": ["A only", "A and B", "B and C", "All three"],
+      "answer": 2,
+      "explain": "The comma in A adds a space ($ 5). Both + and an f-string give you full control over spacing."
+    },
+    {
+      "id": "h6",
+      "level": "hard",
+      "q": "What does this code print?",
+      "code": "cost = 7.5\nprint(f\"Total: ${cost:.2f}\")",
+      "options": ["Total: $7.5", "Total: $7.50", "Total: $7.500", "Error"],
+      "answer": 1,
+      "explain": ":.2f formats the number with exactly two decimal places, so 7.5 becomes 7.50."
+    },
+    {
+      "id": "h7",
+      "level": "hard",
+      "q": "The user types 12 when asked. What happens?",
+      "code": "age = input(\"Age: \")\nprint(age + 1)",
+      "options": [
+        "It prints 13",
+        "It prints 121",
+        "It raises a TypeError",
+        "It prints 12 + 1"
+      ],
+      "answer": 2,
+      "explain": "input() gives the string \"12\", and + can't join a string with the integer 1. Use int(age) + 1."
+    },
+    {
+      "id": "h8",
+      "level": "hard",
+      "q": "What does this code print?",
+      "code": "a = \"2\"\nb = \"3\"\nprint(a + b, int(a) + int(b))",
+      "options": ["5 5", "23 5", "23 23", "5 23"],
+      "answer": 1,
+      "explain": "a + b joins the strings into 23, int(a) + int(b) adds the numbers into 5, and the comma puts a space between them."
+    },
+    {
+      "id": "h9",
+      "level": "hard",
+      "q": "Which statement is TRUE?",
+      "options": [
+        "str(age) permanently changes age into a string",
+        "+ between a string and an int adds them as numbers",
+        "A comma in print() accepts items of different types without converting",
+        "f-strings need str() around every number"
+      ],
+      "answer": 2,
+      "explain": "Commas accept mixed types. str() only makes a temporary copy, + won't mix types, and f-strings convert numbers for you."
+    },
+    {
+      "id": "h10",
+      "level": "hard",
+      "q": "What does this code print?",
+      "code": "n = 5\nprint(\"n =\", n, \"and \" + str(n * 2))",
+      "options": ["n = 5 and 10", "n =5and 10", "n = 5 and 55", "Error"],
+      "answer": 0,
+      "explain": "The commas add spaces between \"n =\", 5, and \"and 10\". n * 2 is 10, and str() lets + join it to \"and \"."
+    }
+  ]
+}

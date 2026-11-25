@@ -1,0 +1,927 @@
+<style>
+  .practice-container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 1rem 0 4rem;
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+    color: #e2e8f0;
+  }
+
+  .practice-header {
+    background: linear-gradient(
+      135deg,
+      rgba(56, 189, 248, 0.12),
+      rgba(16, 185, 129, 0.08)
+    );
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 16px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .practice-header h1 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #f8fafc;
+    margin: 0 0 0.75rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  .practice-rule {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(245, 158, 11, 0.12);
+    border-left: 4px solid #f59e0b;
+    padding: 0.85rem 1.15rem;
+    border-radius: 0 10px 10px 0;
+    font-size: 1.05rem;
+    color: #fef3c7;
+    margin: 0;
+  }
+
+  .practice-rule code {
+    background: rgba(0, 0, 0, 0.35);
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
+    color: #fcd34d;
+    font-weight: 600;
+  }
+
+  .question-card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-left: 5px solid #38bdf8;
+    border-radius: 14px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.75rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    transition:
+      transform 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+
+  .question-card:hover {
+    border-color: #334155;
+    border-left-color: #7dd3fc;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -5px rgba(0, 0, 0, 0.55);
+  }
+
+  .q-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .q-badge {
+    background: rgba(56, 189, 248, 0.16);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .q-topic {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #94a3b8;
+  }
+
+  .q-prompt {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.6;
+    color: #f8fafc;
+    margin: 0 0 1.15rem 0;
+  }
+
+  .q-prompt code {
+    background: #1e293b;
+    color: #7dd3fc;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    border: 1px solid #334155;
+  }
+
+  .expected-box {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    background: #020617;
+    border: 1px dashed #334155;
+    border-radius: 10px;
+    padding: 0.85rem 1.15rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .expected-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #64748b;
+  }
+
+  .expected-output {
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+  }
+
+  .help-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  details.clue-box,
+  details.answer-box {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+    background: rgba(15, 23, 42, 0.6);
+  }
+
+  details.clue-box summary,
+  details.answer-box summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.8rem 1.1rem;
+    font-size: 0.98rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    transition: background 0.15s ease;
+  }
+
+  details.clue-box summary::-webkit-details-marker,
+  details.answer-box summary::-webkit-details-marker {
+    display: none;
+  }
+
+  details.clue-box summary {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.08);
+  }
+
+  details.clue-box summary:hover {
+    background: rgba(245, 158, 11, 0.15);
+  }
+
+  details.answer-box summary {
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.08);
+  }
+
+  details.answer-box summary:hover {
+    background: rgba(16, 185, 129, 0.15);
+  }
+
+  details summary::after {
+    content: "Click to reveal";
+    font-size: 0.8rem;
+    font-weight: 500;
+    opacity: 0.75;
+  }
+
+  details[open] summary::after {
+    content: "Hide";
+  }
+
+  .drawer-content {
+    padding: 1.1rem 1.25rem;
+    border-top: 1px solid #1e293b;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+    background: #090d16;
+  }
+
+  .drawer-content pre {
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    font-size: 1.05rem;
+    color: #f8fafc;
+    overflow-x: auto;
+    margin: 0 0 0.85rem 0;
+  }
+
+  .drawer-content code {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 0.15rem 0.4rem;
+    border-radius: 5px;
+    font-size: 0.95rem;
+  }
+
+  .lesson-ref {
+    display: inline-block;
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+  }
+</style>
+
+<main class="practice-container">
+  <header class="practice-header">
+    <h1>Practice: Printing Variables (Comma &amp; Plus Only)</h1>
+    <p class="practice-rule">
+      <span
+        ><strong>Rule:</strong> Do not use <code>f"..."</code> f-strings. Use
+        only commas (<code>,</code>), plus (<code>+</code>), and
+        <code>str()</code> where needed. You <bold>MUST</bold> print
+        <bold>EXACTLY</bold> how the questions ask you to print.
+      </span>
+    </p>
+  </header>
+
+  <!-- Q1 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 01</span>
+      <span class="q-topic">Greeting with punctuation</span>
+    </div>
+    <p class="q-prompt">
+      Create a variable called <code>name</code> with value
+      <code>"Tom"</code> and print the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Hello, Tom!</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Remember that a comma adds a space before <code>!</code> (giving
+          <code>Hello, Tom !</code>). Use <code>+</code> to glue the exclamation
+          mark directly to <code>name</code> with no space.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+name = "Tom"
+print("Hello,", name + "!")</pre
+          >
+          <p>
+            <code>+</code> adds no space, making it ideal for attaching
+            punctuation like <code>name + "!"</code>, while the comma handles
+            the space after <code>"Hello,"</code>.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 3 (The difference: spaces)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q2 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 02</span>
+      <span class="q-topic">Age sentence</span>
+    </div>
+    <p class="q-prompt">
+      Create a variable <code>age</code> with value <code>10</code> and print
+      the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">I am 10 years old.</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Since there are normal spaces around the number <code>10</code>, you
+          can separate the three parts with commas—or convert
+          <code>age</code> with <code>str()</code> if using <code>+</code>.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+age = 10
+print("I am", age, "years old.")
+# Or using +:
+print("I am " + str(age) + " years old.")</pre
+          >
+          <p>
+            Commas accept numbers directly and add spaces automatically. If you
+            used <code>+</code>, wrapping <code>age</code> in
+            <code>str(age)</code> prevents a <code>TypeError</code>.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Comma) &amp; Section 5 (str() and
+            int())</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q3 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 03</span>
+      <span class="q-topic">Math equation</span>
+    </div>
+    <p class="q-prompt">
+      Create two variables <code>a = 4</code> and <code>b = 6</code> and print
+      the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">4 + 6 = 10</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Every symbol (<code>+</code> and <code>=</code>) has spaces around it.
+          Pass <code>a</code>, <code>"+"</code>, <code>b</code>,
+          <code>"="</code>, and <code>a + b</code> as separate items to
+          <code>print()</code>.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+a = 4
+b = 6
+print(a, "+", b, "=", a + b)</pre
+          >
+          <p>
+            <code>+</code> between two integers (<code>a + b</code>) performs
+            math (<code>10</code>), while separating each piece with commas adds
+            the exact single spaces needed around <code>+</code> and
+            <code>=</code>.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Comma) &amp; Section 6 (Matching
+            types)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q4 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 04</span>
+      <span class="q-topic">Price tag</span>
+    </div>
+    <p class="q-prompt">
+      Create a variable <code>price = 2.5</code> and print the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">The price is $2.5</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          There is <strong>no space</strong> between <code>$</code> and
+          <code>2.5</code>. Because <code>price</code> is a number, convert it
+          with <code>str()</code> before joining it with <code>+</code>.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+price = 2.5
+print("The price is $" + str(price))</pre
+          >
+          <p>
+            A comma would wrongly print <code>$ 2.5</code>, so <code>+</code> is
+            required for no gap. Wrapping <code>price</code> in
+            <code>str(price)</code> makes both sides of <code>+</code> strings.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 3 (Spaces) &amp; Section 5 (str() and
+            int())</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q5 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 05</span>
+      <span class="q-topic">Two words</span>
+    </div>
+    <p class="q-prompt">
+      Create two variables <code>color = "Red"</code> and
+      <code>thing = "Ball"</code> and print the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Red Ball</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Both variables are already strings, and there is a single space
+          between them. Either a comma or <code>+ " " +</code> works here.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+color = "Red"
+thing = "Ball"
+print(color, thing)
+# Or using +:
+print(color + " " + thing)</pre
+          >
+          <p>
+            Using a comma automatically inserts a single space between two
+            variables, whereas <code>+</code> requires adding
+            <code>" "</code> manually.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Comma) &amp; Section 2 (Plus)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q6 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 06</span>
+      <span class="q-topic">Weather report</span>
+    </div>
+    <p class="q-prompt">
+      Create a variable <code>temperature = 30</code> and print the exact text
+      below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Temperature: 30 degrees C</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Every part of this output is separated by a normal single space.
+          Commas handle both strings and numbers without extra conversion.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+temperature = 30
+print("Temperature:", temperature, "degrees C")</pre
+          >
+          <p>
+            Commas accept numbers directly without conversion and insert single
+            spaces between each item.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Printing several items with a
+            comma)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q7 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 07</span>
+      <span class="q-topic">Exam score</span>
+    </div>
+    <p class="q-prompt">
+      Create a variable <code>marks = 88</code> and print the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Marks: 88/100</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Look closely at <code>88/100</code>—there is
+          <strong>no space</strong> before the slash. Convert
+          <code>marks</code> with <code>str()</code> so you can glue
+          <code>"/100"</code> onto it with <code>+</code>.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+marks = 88
+print("Marks:", str(marks) + "/100")</pre
+          >
+          <p>
+            Using a comma after <code>marks</code> would produce
+            <code>88 /100</code>. Converting <code>marks</code> with
+            <code>str()</code> lets you use <code>+</code> to attach
+            <code>"/100"</code> without a space.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 3 (Spaces) &amp; Section 5 (str() and
+            int())</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q8 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 08</span>
+      <span class="q-topic">Coordinates</span>
+    </div>
+    <p class="q-prompt">
+      Create variables <code>x = 3</code> and <code>y = 1.5</code> and print the
+      exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">x is 3, y is 1.5</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Watch out for the comma right after <code>3</code>! Putting a comma
+          inside <code>print("x is", x, ",")</code> prints <code>3 ,</code> with
+          an unwanted space before the comma.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+x = 3
+y = 1.5
+print("x is " + str(x) + ", y is " + str(y))
+# Or mixing comma and plus:
+print("x is", str(x) + ", y is", y)</pre
+          >
+          <p>
+            Attaching <code>,</code> directly after <code>3</code> with no space
+            requires <code>+</code>, which in turn requires converting
+            <code>x</code> with <code>str(x)</code>.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 3 (Spaces) &amp; Section 5 (str() and
+            int())</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q9 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 09</span>
+      <span class="q-topic">Country label</span>
+    </div>
+    <p class="q-prompt">
+      Create a variable <code>country = "India"</code> and print the exact text
+      below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Country: India</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          This works just like the <code>print("Age:", age)</code> example in
+          the first section of the lesson.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+country = "India"
+print("Country:", country)</pre
+          >
+          <p>
+            Separating <code>"Country:"</code> and <code>country</code> with a
+            comma automatically places a single space between them.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Printing several items with a
+            comma)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q10 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 10</span>
+      <span class="q-topic">Rectangle area</span>
+    </div>
+    <p class="q-prompt">
+      Create variables <code>length = 5</code> and <code>width = 4</code> and
+      print the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Area = 20</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Calculate the area using <code>length * width</code>. Pass it as the
+          second item after <code>"Area ="</code> using a comma.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+length = 5
+width = 4
+print("Area =", length * width)</pre
+          >
+          <p>
+            Python evaluates <code>length * width</code> to
+            <code>20</code> first, and the comma in <code>print()</code> prints
+            it after <code>"Area ="</code> with a single space.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Printing several items with a
+            comma)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q11 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 11</span>
+      <span class="q-topic">Favourite hero</span>
+    </div>
+    <p class="q-prompt">
+      Create a variable <code>hero = "Batman"</code> and print the exact text
+      below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Hero: Batman</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Use a comma between <code>"Hero:"</code> and <code>hero</code>—or join
+          <code>"Hero: "</code> and <code>hero</code> with <code>+</code>.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+hero = "Batman"
+print("Hero:", hero)</pre
+          >
+          <p>
+            Both commas and <code>+</code> (with a manual space) join two
+            strings cleanly.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Comma) &amp; Section 2 (Plus)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q12 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 12</span>
+      <span class="q-topic">Pi value</span>
+    </div>
+    <p class="q-prompt">
+      Create a variable <code>pi = 3.14</code> and print the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Pi value: 3.14</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Even though <code>3.14</code> is a decimal number (float), commas in
+          <code>print()</code> handle it without needing <code>str()</code>.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+pi = 3.14
+print("Pi value:", pi)</pre
+          >
+          <p>
+            <code>print("a", b)</code> works directly with numbers and inserts
+            the space automatically.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Comma) &amp; Section 8
+            (Recap)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q13 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 13</span>
+      <span class="q-topic">Plural fruit</span>
+    </div>
+    <p class="q-prompt">
+      Create variables <code>fruit = "Apple"</code> and
+      <code>count = 5</code> and print the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">You have 5 Apples</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Notice that <code>fruit</code> is <code>"Apple"</code>, but the output
+          says <code>Apples</code> (with an <code>s</code> attached with no
+          space). Use <code>+ "s"</code> on <code>fruit</code>!
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+fruit = "Apple"
+count = 5
+print("You have", count, fruit + "s")</pre
+          >
+          <p>
+            Commas separate <code>"You have"</code>, <code>count</code>, and the
+            final word with spaces, while <code>fruit + "s"</code> uses
+            concatenation without a space to pluralize <code>"Apple"</code>.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Comma) &amp; Section 3
+            (Spaces)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q14 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 14</span>
+      <span class="q-topic">Day and mood</span>
+    </div>
+    <p class="q-prompt">
+      Create variables <code>day = "Friday"</code> and
+      <code>feeling = "excited"</code> and print the exact text below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Friday - excited</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Both variables are strings, and the hyphen has a space on each side.
+          Pass three items separated by commas: <code>day</code>,
+          <code>"-"</code>, and <code>feeling</code>.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+day = "Friday"
+feeling = "excited"
+print(day, "-", feeling)
+# Or using +:
+print(day + " - " + feeling)</pre
+          >
+          <p>
+            Using commas automatically puts spaces around <code>"-"</code>.
+            Using <code>+</code> works too as long as you include the spaces
+            inside <code>" - "</code>.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 1 (Comma) &amp; Section 2 (Plus)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+
+  <!-- Q15 -->
+  <article class="question-card">
+    <div class="q-top">
+      <span class="q-badge">Question 15</span>
+      <span class="q-topic">Print a number</span>
+    </div>
+    <p class="q-prompt">
+      Create a variable <code>number = 9.8</code> and print the exact text
+      below:
+    </p>
+    <div class="expected-box">
+      <span class="expected-label">Expected Output</span>
+      <span class="expected-output">Number: 9.8</span>
+    </div>
+    <div class="help-actions">
+      <details class="clue-box">
+        <summary>💡 Step 1: Need a clue?</summary>
+        <div class="drawer-content">
+          Use a comma between <code>"Number:"</code> and <code>number</code>—or
+          convert <code>number</code> with <code>str()</code> if you use
+          <code>+</code>.
+        </div>
+      </details>
+      <details class="answer-box">
+        <summary>✅ Step 2: Still stuck? Show answer &amp; explanation</summary>
+        <div class="drawer-content">
+          <pre>
+number = 9.8
+print("Number:", number)
+# Or using +:
+print("Number: " + str(number))</pre
+          >
+          <p>
+            Commas handle numbers directly with automatic spacing, while
+            <code>+</code> requires <code>str(number)</code> and a manual space.
+          </p>
+          <span class="lesson-ref"
+            >📖 Review in lesson: Section 5 (str() and int()) &amp; Section 8
+            (Recap)</span
+          >
+        </div>
+      </details>
+    </div>
+  </article>
+</main>

@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Python lesson: printing variables inside text</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        --bg: #f6f7fb;
+        --ink: #1d2333;
+        --muted: #5a6479;
+        --accent: #2f4fd8;
+        --line: #d9ddea;
+        --code-bg: #ebeef7;
+        --str: #1b7a4b;
+        --com: #7a8499;
+        --out-bg: #1b2133;
+        --out-ink: #dbe4ff;
+        --err-bg: #fdeeee;
+        --err-ink: #a11d1d;
+        --ok-bg: #e8f6ee;
+        --ok-ink: #17653d;
+        --note-bg: #eef1ff;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #12151f;
+          --ink: #e6e9f4;
+          --muted: #9aa3b8;
+          --accent: #8ea2ff;
+          --line: #2b3144;
+          --code-bg: #1b2030;
+          --str: #6fd6a1;
+          --com: #7f8aa3;
+          --out-bg: #0a0d16;
+          --out-ink: #cfd9ff;
+          --err-bg: #2a1719;
+          --err-ink: #ff9d9d;
+          --ok-bg: #142a1e;
+          --ok-ink: #8fe3b4;
+          --note-bg: #1a2040;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #12151f;
+        --ink: #e6e9f4;
+        --muted: #9aa3b8;
+        --accent: #8ea2ff;
+        --line: #2b3144;
+        --code-bg: #1b2030;
+        --str: #6fd6a1;
+        --com: #7f8aa3;
+        --out-bg: #0a0d16;
+        --out-ink: #cfd9ff;
+        --err-bg: #2a1719;
+        --err-ink: #ff9d9d;
+        --ok-bg: #142a1e;
+        --ok-ink: #8fe3b4;
+        --note-bg: #1a2040;
+        color-scheme: dark;
+      }
+      html {
+        height: 100%;
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          18px/1.65 "Atkinson Hyperlegible",
+          system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 46rem;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem 4rem;
+      }
+      h1 {
+        font-size: 2.2rem;
+        line-height: 1.15;
+        margin: 0 0 0.6rem;
+        letter-spacing: -0.01em;
+      }
+      h2 {
+        font-size: 1.5rem;
+        line-height: 1.25;
+        margin: 3rem 0 0.6rem;
+        padding-top: 1.4rem;
+        border-top: 1px solid var(--line);
+      }
+      p {
+        margin: 0.7rem 0;
+        max-width: 40rem;
+      }
+      .lead {
+        color: var(--muted);
+        font-size: 1.1rem;
+      }
+      code,
+      pre {
+        font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+      }
+      p code,
+      li code {
+        background: var(--code-bg);
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        font-size: 0.88em;
+      }
+      pre {
+        margin: 0.9rem 0;
+        padding: 0.9rem 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 0.9rem;
+        line-height: 1.55;
+        max-width: 100%;
+      }
+      .code {
+        background: var(--code-bg);
+        border-left: 4px solid var(--accent);
+      }
+      .out {
+        background: var(--out-bg);
+        color: var(--out-ink);
+        margin-top: -0.4rem;
+        border-radius: 0 0 8px 8px;
+      }
+      .out::before {
+        content: "Output";
+        display: block;
+        color: #8b97c4;
+        font-size: 0.75rem;
+        margin-bottom: 0.3rem;
+      }
+      .err {
+        background: var(--err-bg);
+        color: var(--err-ink);
+        border-left: 4px solid var(--err-ink);
+        margin-top: -0.4rem;
+      }
+      .s {
+        color: var(--str);
+      }
+      .c {
+        color: var(--com);
+        font-style: italic;
+      }
+      .b {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .note,
+      .good {
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+      }
+      .note {
+        background: var(--note-bg);
+      }
+      .good {
+        background: var(--ok-bg);
+        color: var(--ok-ink);
+      }
+      .note p,
+      .good p {
+        margin: 0.2rem 0;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.95rem;
+      }
+      .wrap {
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 0.5rem 0.6rem;
+        text-align: left;
+        vertical-align: top;
+      }
+      nav {
+        margin: 1.2rem 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 1rem;
+        font-size: 0.95rem;
+      }
+      nav a {
+        color: var(--accent);
+      }
+      ul {
+        padding-left: 1.3rem;
+      }
+      li {
+        margin: 0.3rem 0;
+      }
+      a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Printing variables inside text in Python</h1>
+      <p class="lead">
+        You will learn three ways to mix variables and text in
+        <code>print()</code>, why the first two sometimes break, and why
+        f-strings are usually the best choice. Type each example yourself and
+        run it.
+      </p>
+      <nav>
+        <a href="#comma">1. Comma</a><a href="#plus">2. Plus</a
+        ><a href="#diff">3. Comma vs plus</a
+        ><a href="#error">4. The type problem</a
+        ><a href="#convert">5. str() and int()</a
+        ><a href="#match">6. Matching types</a
+        ><a href="#fstring">7. f-strings</a><a href="#recap">8. Recap</a>
+      </nav>
+
+      <h2 id="comma">1. Printing several items with a comma</h2>
+      <p>
+        <code>print()</code> can take many items at once. Separate them with
+        commas and Python prints them on one line.
+      </p>
+      <pre class="code">
+name = "Aisha"
+print("Hello", name)</pre
+      >
+      <pre class="out">Hello Aisha</pre>
+      <p>
+        Notice that a space appeared between <code>Hello</code> and
+        <code>Aisha</code>, even though we never typed one. The comma adds a
+        single space between items automatically.
+      </p>
+      <p>Commas also accept numbers, with no extra work:</p>
+      <pre class="code">
+age = 12
+print("Age:", age)</pre
+      >
+      <pre class="out">Age: 12</pre>
+
+      <h2 id="plus">2. Joining text with +</h2>
+      <p>
+        The <code>+</code> operator can also build a message. With text, it
+        glues the pieces together (this is called <b>concatenation</b>).
+      </p>
+      <pre class="code">
+name = "Aisha"
+print("Hello " + name)</pre
+      >
+      <pre class="out">Hello Aisha</pre>
+      <p>
+        It worked, but look closely: there is a space <em>inside</em> the quotes
+        after <code>Hello</code>. We had to type it ourselves.
+      </p>
+
+      <h2 id="diff">3. The difference: spaces</h2>
+      <p>
+        Comma adds a space for you. Plus adds nothing. Here is what happens if
+        we forget the space with <code>+</code>:
+      </p>
+      <pre class="code">print("Hello" + name)</pre>
+      <pre class="out">HelloAisha</pre>
+      <p>
+        That looks like a bug, but sometimes it is exactly what you want. When
+        you need <b>no space</b>, the comma cannot help you, because it always
+        adds one:
+      </p>
+      <pre class="code">
+price = "5"
+print("$", price)     # comma puts a space in
+print("$" + price)    # plus keeps them together</pre
+      >
+      <pre class="out">
+$ 5
+$5</pre
+      >
+      <div class="wrap">
+        <table>
+          <tr>
+            <th></th>
+            <th>Comma <code>,</code></th>
+            <th>Plus <code>+</code></th>
+          </tr>
+          <tr>
+            <td>Space between items</td>
+            <td>Added automatically</td>
+            <td>Never added</td>
+          </tr>
+          <tr>
+            <td>Good when</td>
+            <td>You want normal spacing</td>
+            <td>
+              You want full control (e.g. <code>$5</code>, <code>name!</code>)
+            </td>
+          </tr>
+          <tr>
+            <td>Mixing text and numbers</td>
+            <td>Works</td>
+            <td>Causes an error (next section)</td>
+          </tr>
+        </table>
+      </div>
+
+      <h2 id="error">4. The problem: adding a number and text with +</h2>
+      <p>
+        Every value in Python has a <b>data type</b>. <code>"12"</code> in
+        quotes is a <b>string</b> (<code>str</code>), which is text.
+        <code>12</code> without quotes is an <b>integer</b> (<code>int</code>),
+        which is a number you can do maths with.
+      </p>
+      <p>
+        The <code>+</code> operator means two different things depending on the
+        types. Between two numbers it adds them. Between two strings it joins
+        them. But Python refuses to guess what you mean when you mix the two.
+      </p>
+      <pre class="code">
+age = 12
+print("I am " + age + " years old")</pre
+      >
+      <pre class="err">
+TypeError: can only concatenate str (not "int") to str</pre
+      >
+      <p>
+        Python is saying: “I can only join text to text, and <code>age</code> is
+        a number.” The same thing happens the other way around:
+      </p>
+      <pre class="code">print(5 + "5")</pre>
+      <pre class="err">
+TypeError: unsupported operand type(s) for +: 'int' and 'str'</pre
+      >
+      <p>
+        Should <code>5 + "5"</code> be <code>10</code> or <code>"55"</code>?
+        Both are reasonable answers, so Python raises an error instead of
+        choosing for you.
+      </p>
+
+      <h2 id="convert">5. The fix: str() and int()</h2>
+      <p>
+        You can convert a value from one type to another. The conversion is
+        <b>temporary</b>: it makes a new value for that one place and leaves the
+        original variable unchanged.
+      </p>
+      <p><code>str()</code> turns a number into text:</p>
+      <pre class="code">
+age = 12
+print("I am " + str(age) + " years old")
+print(type(age))     # still an int</pre
+      >
+      <pre class="out">
+I am 12 years old
+&lt;class 'int'&gt;</pre
+      >
+      <p>
+        <code>int()</code> turns text that looks like a number into a real
+        number:
+      </p>
+      <pre class="code">
+total = "5"
+print(5 + int(total))</pre
+      >
+      <pre class="out">10</pre>
+      <div class="note">
+        <p>
+          <b>Remember:</b> <code>input()</code> always gives you a string, even
+          if the user types digits. Use <code>int()</code> on it before doing
+          maths.
+        </p>
+      </div>
+
+      <h2 id="match">6. Why matching types matters with +</h2>
+      <p>
+        The rule is simple:
+        <b>both sides of <code>+</code> must be the same type.</b> And the type
+        you choose decides the result:
+      </p>
+      <pre class="code">
+a = "5"
+b = "5"
+print(a + b)             # text + text: joined
+print(int(a) + int(b))   # number + number: added</pre
+      >
+      <pre class="out">
+55
+10</pre
+      >
+      <p>
+        Same digits, completely different answers. That is why you must always
+        ask: “Do I want to join text, or do maths?” Then convert so that both
+        sides match.
+      </p>
+      <pre class="code">
+print("5" + 5)           # str + int: error
+print("5" + str(5))      # str + str: "55"
+print(int("5") + 5)      # int + int: 10</pre
+      >
+      <pre class="out">
+(first line fails with TypeError)
+55
+10</pre
+      >
+      <p>
+        Also be careful: <code>int()</code> only works on text that is really a
+        whole number. <code>int("hello")</code> raises a
+        <code>ValueError</code>.
+      </p>
+
+      <h2 id="fstring">7. A better way: f-strings</h2>
+      <p>
+        All that converting and spacing gets tiring. Python has a cleaner way:
+        put an <code>f</code> directly before the opening quote, and write
+        variables inside <code>{ }</code> curly braces.
+      </p>
+      <pre class="code">
+name = "Aisha"
+age = 12
+print(f"Hello {name}, I am {age} years old")</pre
+      >
+      <pre class="out">Hello Aisha, I am 12 years old</pre>
+      <p>Compare it with the <code>+</code> version of the same sentence:</p>
+      <pre
+        class="code"
+      >print("Hello " + name + ", I am " + str(age) + " years old")   <span class="c"># long and easy to get wrong</span>
+print(f"Hello {name}, I am {age} years old")                    <span class="c"># short and readable</span></pre>
+      <p>Here is how f-strings solve each problem from earlier:</p>
+      <ul>
+        <li>
+          <b>Spaces:</b> you control them exactly, because what you type is what
+          you get. Need no space? <code>f"${price}"</code> gives
+          <code>$5</code>.
+        </li>
+        <li>
+          <b>Types:</b> numbers go straight in. No <code>str()</code> needed,
+          and no <code>TypeError</code>.
+        </li>
+        <li>
+          <b>Readability:</b> the sentence reads like a sentence, not a chain of
+          pieces.
+        </li>
+      </ul>
+      <p>You can even do maths or call functions inside the braces:</p>
+      <pre class="code">
+apples = 3
+price = 2.5
+print(f"{apples} apples cost {apples * price} dollars")
+print(f"Shouting: {name.upper()}!")</pre
+      >
+      <pre class="out">
+3 apples cost 7.5 dollars
+Shouting: AISHA!</pre
+      >
+      <p>
+        One bonus: format numbers neatly with <code>:.2f</code> for two decimal
+        places.
+      </p>
+      <pre class="code">
+cost = 7.5
+print(f"Total: ${cost:.2f}")</pre
+      >
+      <pre class="out">Total: $7.50</pre>
+      <div class="note">
+        <p>
+          <b>Don’t forget the <code>f</code>.</b> Without it, Python prints the
+          braces literally: <code>print("Hello {name}")</code> shows
+          <code>Hello {name}</code>.
+        </p>
+      </div>
+
+      <h2 id="recap">8. Recap</h2>
+      <div class="wrap">
+        <table>
+          <tr>
+            <th>Method</th>
+            <th>Space</th>
+            <th>Numbers</th>
+            <th>Use it when</th>
+          </tr>
+          <tr>
+            <td><code>print("a", b)</code></td>
+            <td>Automatic</td>
+            <td>Fine</td>
+            <td>Quick output</td>
+          </tr>
+          <tr>
+            <td><code>"a" + b</code></td>
+            <td>You add it</td>
+            <td>Needs <code>str()</code></td>
+            <td>Joining strings with no gap</td>
+          </tr>
+          <tr>
+            <td><code>f"a {b}"</code></td>
+            <td>You add it</td>
+            <td>Fine</td>
+            <td>Most of the time</td>
+          </tr>
+        </table>
+      </div>
+      <div class="good">
+        <p>
+          <b>Rule of thumb:</b> use f-strings by default. Use
+          <code>+</code> when you are deliberately joining strings, and make
+          sure the types match.
+        </p>
+      </div>
+
+      <h2>Practice</h2>
+      <ol>
+        <li>
+          Make variables for your name and favourite number. Print “My name is …
+          and my favourite number is …” using a comma, then <code>+</code>, then
+          an f-string.
+        </li>
+        <li>
+          Ask the user for two numbers with <code>input()</code>, add them
+          correctly, and print the result with an f-string.
+        </li>
+        <li>
+          Predict the output of <code>print("3" + "4")</code> and
+          <code>print(int("3") + int("4"))</code> before running them.
+        </li>
+      </ol>
+    </main>
+    <script>
+      (function () {
+        var re =
+          /(#.*$)|(f?"[^"\n]*"|f?'[^'\n]*')|\b(print|str|int|input|type|upper)\b/gm;
+        document.querySelectorAll("pre.code").forEach(function (el) {
+          if (el.querySelector("span")) {
+            /* has manual spans; skip */ return;
+          }
+          var t = el.textContent
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+          el.innerHTML = t.replace(re, function (m, c, s, b) {
+            return c
+              ? '<span class="c">' + c + "</span>"
+              : s
+                ? '<span class="s">' + s + "</span>"
+                : '<span class="b">' + b + "</span>";
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
