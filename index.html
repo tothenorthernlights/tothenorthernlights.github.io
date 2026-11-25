@@ -792,7 +792,7 @@
        ========================================================================== */
       const CURRICULUM_DATA = [
         {
-          id: "topic-physics",
+          id: "topic-python",
           number: "01",
           title: "Variables",
           shortTitle: "Variables",
@@ -800,7 +800,7 @@
           description: "",
           classes: [
             {
-              id: "phys-101",
+              id: "py-101",
               number: "Class 01",
               title: "Class 01",
               duration: "6 min",
@@ -808,7 +808,7 @@
               summary: "Python Variable",
             },
             {
-              id: "phys-102",
+              id: "py-102",
               number: "Class 02",
               title: "Class 02",
               duration: "8 min",
@@ -816,7 +816,7 @@
               summary: "Python Variable Quizes",
             },
             // {
-            //   id: "phys-103",
+            //   id: "py-103",
             //   number: "Class 03",
             //   title: "Class 03",
             //   duration: "9 min",
@@ -834,7 +834,7 @@
           description: "",
           classes: [
             {
-              id: "phys-201",
+              id: "py-201",
               number: "Class 01",
               title: "Class 01",
               duration: "6 min",
@@ -842,7 +842,7 @@
               summary: "Print Function",
             },
             {
-              id: "phys-202",
+              id: "py-202",
               number: "Class 02",
               title: "Class 02",
               duration: "8 min",
@@ -850,7 +850,7 @@
               summary: "Print Function Quizes",
             },
             {
-              id: "phys-203",
+              id: "py-203",
               number: "Class 03",
               title: "Class 03",
               duration: "9 min",
@@ -1042,6 +1042,15 @@
        APPLICATION STATE & LOCALSTORAGE PERSISTENCE
        ========================================================================== */
       const STORAGE_KEY = "northern_lights_2027_progress_v1";
+      const LEGACY_CLASS_IDS = new Map([
+        ["phys-101", "py-101"],
+        ["phys-102", "py-102"],
+        ["phys-103", "py-103"],
+        ["phys-201", "py-201"],
+        ["phys-202", "py-202"],
+        ["phys-203", "py-203"],
+      ]);
+      const LEGACY_TOPIC_IDS = new Map([["topic-physics", "topic-python"]]);
 
       let appState = {
         activeTopicId: CURRICULUM_DATA[0].id,
@@ -1054,13 +1063,24 @@
         try {
           const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
           if (saved && Array.isArray(saved.completedClassIds)) {
-            appState.completedClassIds = saved.completedClassIds;
-            appState.lastOpenedClassId = saved.lastOpenedClassId || null;
+            appState.completedClassIds = [
+              ...new Set(
+                saved.completedClassIds.map(
+                  (id) => LEGACY_CLASS_IDS.get(id) ?? id,
+                ),
+              ),
+            ];
+            appState.lastOpenedClassId =
+              LEGACY_CLASS_IDS.get(saved.lastOpenedClassId) ??
+              saved.lastOpenedClassId ??
+              null;
+            const activeTopicId =
+              LEGACY_TOPIC_IDS.get(saved.activeTopicId) ?? saved.activeTopicId;
             if (
-              saved.activeTopicId &&
-              CURRICULUM_DATA.some((t) => t.id === saved.activeTopicId)
+              activeTopicId &&
+              CURRICULUM_DATA.some((t) => t.id === activeTopicId)
             ) {
-              appState.activeTopicId = saved.activeTopicId;
+              appState.activeTopicId = activeTopicId;
             }
           }
         } catch (err) {

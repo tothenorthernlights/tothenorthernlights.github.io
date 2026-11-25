@@ -1,6 +1,6 @@
 /* ==========================================================================
    QUIZ RENDERER
-   Usage: openQuiz("quiz-phys-101", modalClassBodyEl)
+   Usage: openQuiz("quiz-py-101", modalClassBodyEl)
    Loads content/<quizId>.json and renders it into the given container.
    ========================================================================== */
 async function openQuiz(quizId, root) {
