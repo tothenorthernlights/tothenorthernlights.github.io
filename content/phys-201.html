@@ -1,22 +1,6 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <title>Python lesson: printing variables inside text</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
+<style>
+  .phys-201-lesson {
         box-sizing: border-box;
-        padding-top: env(safe-area-inset-top, 0px);
-        padding-bottom: env(safe-area-inset-bottom, 0px);
         --bg: #f6f7fb;
         --ink: #1d2333;
         --muted: #5a6479;
@@ -33,9 +17,20 @@
         --ok-ink: #17653d;
         --note-bg: #eef1ff;
         color-scheme: light;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root:not([data-theme="light"]) {
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          18px/1.65 "Atkinson Hyperlegible",
+          system-ui,
+          sans-serif;
+  }
+  .phys-201-lesson *,
+  .phys-201-lesson *::before,
+  .phys-201-lesson *::after {
+        box-sizing: border-box;
+  }
+  @media (prefers-color-scheme: dark) {
+    .phys-201-lesson {
           --bg: #12151f;
           --ink: #e6e9f4;
           --muted: #9aa3b8;
@@ -52,77 +47,48 @@
           --ok-ink: #8fe3b4;
           --note-bg: #1a2040;
           color-scheme: dark;
-        }
-      }
-      :root[data-theme="dark"] {
-        --bg: #12151f;
-        --ink: #e6e9f4;
-        --muted: #9aa3b8;
-        --accent: #8ea2ff;
-        --line: #2b3144;
-        --code-bg: #1b2030;
-        --str: #6fd6a1;
-        --com: #7f8aa3;
-        --out-bg: #0a0d16;
-        --out-ink: #cfd9ff;
-        --err-bg: #2a1719;
-        --err-ink: #ff9d9d;
-        --ok-bg: #142a1e;
-        --ok-ink: #8fe3b4;
-        --note-bg: #1a2040;
-        color-scheme: dark;
-      }
-      html {
-        height: 100%;
-        scroll-padding-top: env(safe-area-inset-top, 0px);
-      }
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font:
-          18px/1.65 "Atkinson Hyperlegible",
-          system-ui,
-          sans-serif;
-      }
-      main {
+          background: var(--bg);
+          color: var(--ink);
+    }
+  }
+  .phys-201-lesson main {
         max-width: 46rem;
         margin: 0 auto;
         padding: 2.5rem 1.25rem 4rem;
-      }
-      h1 {
+  }
+  .phys-201-lesson h1 {
         font-size: 2.2rem;
         line-height: 1.15;
         margin: 0 0 0.6rem;
         letter-spacing: -0.01em;
-      }
-      h2 {
+  }
+  .phys-201-lesson h2 {
         font-size: 1.5rem;
         line-height: 1.25;
         margin: 3rem 0 0.6rem;
         padding-top: 1.4rem;
         border-top: 1px solid var(--line);
-      }
-      p {
+  }
+  .phys-201-lesson p {
         margin: 0.7rem 0;
         max-width: 40rem;
-      }
-      .lead {
+  }
+  .phys-201-lesson .lead {
         color: var(--muted);
         font-size: 1.1rem;
-      }
-      code,
-      pre {
+  }
+  .phys-201-lesson code,
+  .phys-201-lesson pre {
         font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-      }
-      p code,
-      li code {
+  }
+  .phys-201-lesson p code,
+  .phys-201-lesson li code {
         background: var(--code-bg);
         padding: 0.1em 0.35em;
         border-radius: 4px;
         font-size: 0.88em;
-      }
-      pre {
+  }
+  .phys-201-lesson pre {
         margin: 0.9rem 0;
         padding: 0.9rem 1rem;
         border-radius: 8px;
@@ -130,97 +96,96 @@
         font-size: 0.9rem;
         line-height: 1.55;
         max-width: 100%;
-      }
-      .code {
+  }
+  .phys-201-lesson .code {
         background: var(--code-bg);
         border-left: 4px solid var(--accent);
-      }
-      .out {
+  }
+  .phys-201-lesson .out {
         background: var(--out-bg);
         color: var(--out-ink);
         margin-top: -0.4rem;
         border-radius: 0 0 8px 8px;
-      }
-      .out::before {
+  }
+  .phys-201-lesson .out::before {
         content: "Output";
         display: block;
         color: #8b97c4;
         font-size: 0.75rem;
         margin-bottom: 0.3rem;
-      }
-      .err {
+  }
+  .phys-201-lesson .err {
         background: var(--err-bg);
         color: var(--err-ink);
         border-left: 4px solid var(--err-ink);
         margin-top: -0.4rem;
-      }
-      .s {
+  }
+  .phys-201-lesson .s {
         color: var(--str);
-      }
-      .c {
+  }
+  .phys-201-lesson .c {
         color: var(--com);
         font-style: italic;
-      }
-      .b {
+  }
+  .phys-201-lesson .b {
         color: var(--accent);
         font-weight: 600;
-      }
-      .note,
-      .good {
+  }
+  .phys-201-lesson .note,
+  .phys-201-lesson .good {
         padding: 0.8rem 1rem;
         border-radius: 8px;
         margin: 1rem 0;
-      }
-      .note {
+  }
+  .phys-201-lesson .note {
         background: var(--note-bg);
-      }
-      .good {
+  }
+  .phys-201-lesson .good {
         background: var(--ok-bg);
         color: var(--ok-ink);
-      }
-      .note p,
-      .good p {
+  }
+  .phys-201-lesson .note p,
+  .phys-201-lesson .good p {
         margin: 0.2rem 0;
-      }
-      table {
+  }
+  .phys-201-lesson table {
         border-collapse: collapse;
         width: 100%;
         font-size: 0.95rem;
-      }
-      .wrap {
+  }
+  .phys-201-lesson .wrap {
         overflow-x: auto;
         margin: 1rem 0;
-      }
-      th,
-      td {
+  }
+  .phys-201-lesson th,
+  .phys-201-lesson td {
         border-bottom: 1px solid var(--line);
         padding: 0.5rem 0.6rem;
         text-align: left;
         vertical-align: top;
-      }
-      nav {
+  }
+  .phys-201-lesson nav {
         margin: 1.2rem 0 0;
         display: flex;
         flex-wrap: wrap;
         gap: 0.4rem 1rem;
         font-size: 0.95rem;
-      }
-      nav a {
+  }
+  .phys-201-lesson nav a {
         color: var(--accent);
-      }
-      ul {
+  }
+  .phys-201-lesson ul {
         padding-left: 1.3rem;
-      }
-      li {
+  }
+  .phys-201-lesson li {
         margin: 0.3rem 0;
-      }
-      a:focus-visible {
+  }
+  .phys-201-lesson a:focus-visible {
         outline: 2px solid var(--accent);
         outline-offset: 2px;
-      }
-    </style>
-  </head>
-  <body>
+  }
+</style>
+<div class="phys-201-lesson">
     <main>
       <h1>Printing variables inside text in Python</h1>
       <p class="lead">
@@ -545,23 +510,24 @@ print(f"Total: ${cost:.2f}")</pre
       (function () {
         var re =
           /(#.*$)|(f?"[^"\n]*"|f?'[^'\n]*')|\b(print|str|int|input|type|upper)\b/gm;
-        document.querySelectorAll("pre.code").forEach(function (el) {
-          if (el.querySelector("span")) {
-            /* has manual spans; skip */ return;
-          }
-          var t = el.textContent
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-          el.innerHTML = t.replace(re, function (m, c, s, b) {
-            return c
-              ? '<span class="c">' + c + "</span>"
-              : s
-                ? '<span class="s">' + s + "</span>"
-                : '<span class="b">' + b + "</span>";
+        document
+          .querySelectorAll(".phys-201-lesson pre.code")
+          .forEach(function (el) {
+            if (el.querySelector("span")) {
+              /* has manual spans; skip */ return;
+            }
+            var t = el.textContent
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
+            el.innerHTML = t.replace(re, function (m, c, s, b) {
+              return c
+                ? '<span class="c">' + c + "</span>"
+                : s
+                  ? '<span class="s">' + s + "</span>"
+                  : '<span class="b">' + b + "</span>";
+            });
           });
-        });
       })();
     </script>
-  </body>
-</html>
+</div>
